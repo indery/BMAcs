@@ -1,0 +1,18 @@
+* featurep! - core-modules.el
+  - just remove these
+
+
+* add-hook! - core-lib.el
+  - maybe useful macro, could keep
+
+* load! - core-lib.el
+  - easy to replace, 
+  - could keep, could use it
+
+* defadvice! - core-lib.el
+* add-transient-hook! - core-lib.el
+after!
+
+
+
+* need a way to specify the dep on the doom core-libs 
