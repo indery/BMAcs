@@ -2,6 +2,7 @@ transient/*
 straight/build/*
 straight/repos/*
 straight/build-cache.el
+straight/modified/*
 
 
 elpa/*
@@ -23,6 +24,8 @@ projectile-bookmarks.eld
 projectile.cache
 
 .dap-breakpoints
+
+auto-save-list/*
 
 mspyls/*
 
