@@ -27,9 +27,8 @@ and Emacs states, and for non-evil users.")
 ;;
 ;;; Keybind settings
 
-(when IS-MAC
-  (setq mac-command-modifier 'super
-        mac-option-modifier 'meta))
+(setq mac-command-modifier 'super
+        mac-option-modifier 'meta)
 
 
 ;;
@@ -175,9 +174,9 @@ localleader prefix."
 ;;
 ;;; Packages
 
-(use-package! which-key
+(use-package which-key
 	      :defer 1
-	      :after-call pre-command-hook
+	    ;;  :after-call pre-command-hook
 	      :init
 	      (setq which-key-sort-order #'which-key-prefix-then-key-order
 		    which-key-sort-uppercase-first nil

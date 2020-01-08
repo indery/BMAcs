@@ -17,7 +17,7 @@ buffer rather than an overlay on the line at point or the minibuffer.")
 
 ;;
 ;;; Packages
-
+(with-eval-after-load '+doom/popup
 (set-popup-rule!
   (lambda (bufname _)
     (when (boundp '+eval-repl-mode)
@@ -28,13 +28,15 @@ buffer rather than an overlay on the line at point or the minibuffer.")
              (set-process-query-on-exit-flag process nil)
              (kill-process process)
              (kill-buffer buf))))
-  :size 0.25 :quit nil)
+  :size 0.25 :quit nil))
 
 
 (after! quickrun
+
   (setq quickrun-focus-p nil)
 
-  (set-popup-rule! "^\\*quickrun" :size 0.3 :ttl 0)
+(after! '+doom/popup
+  (set-popup-rule! "^\\*quickrun" :size 0.3 :ttl 0))
 
   (defadvice! +eval--quickrun-fix-evil-visual-region-a ()
     "Make `quickrun-replace-region' recognize evil visual selections."
@@ -230,26 +232,26 @@ buffer rather than an overlay on the line at point or the minibuffer.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil.el
 
-;;;###autoload (autoload '+eval:region "tools/eval/autoload/evil" nil t)
-(evil-define-operator +eval:region (beg end)
-  "Evaluate selection or sends it to the open REPL, if available."
-  :move-point nil
-  (interactive "<r>")
-  (+eval/region beg end))
-
-;;;###autoload (autoload '+eval:replace-region "tools/eval/autoload/evil" nil t)
-(evil-define-operator +eval:replace-region (beg end)
-  "Evaluate selection and replace it with its result."
-  :move-point nil
-  (interactive "<r>")
-  (+eval/region-and-replace beg end))
-
-;;;###autoload (autoload '+eval:repl "tools/eval/autoload/evil" nil t)
-(evil-define-operator +eval:repl (_beg _end)
-  "Open REPL and send the current selection to it."
-  :move-point nil
-  (interactive "<r>")
-  (+eval/open-repl-other-window))
+;;;;;###autoload (autoload '+eval:region "tools/eval/autoload/evil" nil t)
+;;(evil-define-operator +eval:region (beg end)
+;;  "Evaluate selection or sends it to the open REPL, if available."
+;;  :move-point nil
+;;  (interactive "<r>")
+;;  (+eval/region beg end))
+;;
+;;;;;###autoload (autoload '+eval:replace-region "tools/eval/autoload/evil" nil t)
+;;(evil-define-operator +eval:replace-region (beg end)
+;;  "Evaluate selection and replace it with its result."
+;;  :move-point nil
+;;  (interactive "<r>")
+;;  (+eval/region-and-replace beg end))
+;;
+;;;;;###autoload (autoload '+eval:repl "tools/eval/autoload/evil" nil t)
+;;(evil-define-operator +eval:repl (_beg _end)
+;;  "Open REPL and send the current selection to it."
+;;  :move-point nil
+;;  (interactive "<r>")
+;;  (+eval/open-repl-other-window))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; repl.el
