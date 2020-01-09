@@ -23,6 +23,8 @@
 
   )
 
+(use-package json-reformat)
+
 
 ;; Tools
 (use-package eslintd-fix
