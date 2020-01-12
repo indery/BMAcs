@@ -1,6 +1,71 @@
 #+TITLE: Needs/Plans for more efficient Keybindings
 
+* notes/thoughts on Overall schema
+** object->verb vs verb->object (or scope->verb->object)
+** Esc should work consistently everywhere
+** cannonical ordering (for vim/evil-mode) is : operator -> motion -> object
+   this could roughly map to operator -> scope -> object
+   e.g. 
+   - search -> project -> file
+   - search -> project -> string
 
-* Window Nav/Manipulation State/Hydra
-  
-* Multiple Cursors State/Hydra
+
+
+* Tools Available
+** Global Keymaps    
+   - prefix
+   - chord or quick actions
+   use for actions that should always be available in all contexts
+** Major-Mode Keymaps
+   - prefix
+   - chord or quick actions
+   actions to perform relevant to the major mode - but not specifically related to the text on the page
+** Hydras
+   1. for sub-contexts that are temporary
+      - debugging
+      - window management
+   2. complicated workflows
+   3. evil-mode-like "modes" that aren't about text specifically, but other concepts (like window manipulation)
+
+** evil-mode operators
+   for interacting with the text on screen
+      - change, delete, yank, etc
+      - lookups/doc
+      - eval 
+      - nav? 
+
+* Functions/Commands
+
+** window manipulation  
+*** re-arranging
+    - swapping
+    - re-inserting windows
+    - popping-out or popping in
+    - rotating
+*** resizing
+    - 4-directional increase or decrease in size
+
+** Coding
+*** Eval
+*** lookup/doc
+*** Navigation
+
+** Org-Mode
+*** Org Text manipulation
+**** evil text-objects/movements 
+     - subtree 
+     - line
+     - property
+     - tag
+     - TODO state
+** workspace + project actions
+*** Run... 
+**** debug/run (want a quick-run option - quick keybind)
+     
+*** Jump To 
+    - workspace notes (.org file)
+    - workspace settings (.el file that is always run on entering workspace)
+    - workspace scratch (.el file for scratch code that isn't run on entering workspace)
+
+* Stuff to Build
+** window movement/manipulation hydra
