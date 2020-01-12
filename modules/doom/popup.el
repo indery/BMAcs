@@ -1,6 +1,426 @@
-;;; ui/popup/autoload/popup.el -*- lexical-binding: t; -*-
-(require '+doom-core-lib)
 
+(require '+doom/core)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Config.el
+
+(defconst +popup-window-parameters '(ttl quit select modeline popup)
+  "A list of custom parameters to be added to `window-persistent-parameters'.
+Modifying this has no effect, unless done before ui/popup loads.")
+
+(defvar +popup-default-display-buffer-actions
+  '(+popup-display-buffer-stacked-side-window-fn)
+  "The functions to use to display the popup buffer.")
+
+(defvar +popup-default-alist
+  '((window-height . 0.16) ; remove later
+    (reusable-frames . visible))
+  "The default alist for `display-buffer-alist' rules.")
+
+(defvar +popup-default-parameters
+  '((transient . t)   ; remove later
+    (quit . t)        ; remove later
+    (select . ignore) ; remove later
+    (no-other-window . t))
+  "The default window parameters.")
+
+(defvar +popup-margin-width 1
+  "Size of the margins to give popup windows. Set this to nil to disable margin
+adjustment.")
+
+(defvar +popup--inhibit-transient nil)
+(defvar +popup--inhibit-select nil)
+(defvar +popup--old-display-buffer-alist nil)
+(defvar +popup--remember-last t)
+(defvar +popup--last nil)
+(defvar-local +popup--timer nil)
+
+
+;;
+;; Global modes
+
+(defvar +popup-mode-map (make-sparse-keymap)
+  "Active keymap in a session with the popup system enabled. See
+`+popup-mode'.")
+
+(defvar +popup-buffer-mode-map
+  (let ((map (make-sparse-keymap)))
+    ;; For maximum escape coverage in emacs state buffers; this only works in
+    ;; GUI Emacs, in tty Emacs use C-g instead
+    (define-key map [escape] #'doom/escape) 
+    map)
+  "Active keymap in popup windows. See `+popup-buffer-mode'.")
+
+(define-minor-mode +popup-mode
+  "Global minor mode representing Doom's popup management system."
+  :init-value nil
+  :global t
+  :keymap +popup-mode-map
+  (cond (+popup-mode
+         (add-hook 'doom-escape-hook #'+popup-close-on-escape-h 'append)
+         (setq +popup--old-display-buffer-alist display-buffer-alist
+               display-buffer-alist +popup--display-buffer-alist
+               window--sides-inhibit-check t)
+         (dolist (prop +popup-window-parameters)
+           (push (cons prop 'writable) window-persistent-parameters)))
+        (t
+         (remove-hook 'doom-escape-hook #'+popup-close-on-escape-h)
+         (setq display-buffer-alist +popup--old-display-buffer-alist
+               window--sides-inhibit-check nil)
+         (+popup-cleanup-rules-h)
+         (dolist (prop +popup-window-parameters)
+           (delq (assq prop window-persistent-parameters)
+                 window-persistent-parameters)))))
+
+(define-minor-mode +popup-buffer-mode
+  "Minor mode for individual popup windows.
+
+It is enabled when a buffer is displayed in a popup window and disabled when
+that window has been changed or closed."
+  :init-value nil
+  :keymap +popup-buffer-mode-map
+  (if (not +popup-buffer-mode)
+      (remove-hook 'after-change-major-mode-hook #'+popup-set-modeline-on-enable-h t)
+    (add-hook 'after-change-major-mode-hook #'+popup-set-modeline-on-enable-h
+              nil 'local)
+    (when (timerp +popup--timer)
+      (remove-hook 'kill-buffer-hook #'+popup-kill-buffer-hook-h t)
+      (cancel-timer +popup--timer)
+      (setq +popup--timer nil))))
+
+(put '+popup-buffer-mode 'permanent-local t)
+(put '+popup-buffer-mode 'permanent-local-hook t)
+(put '+popup-set-modeline-on-enable-h 'permanent-local-hook t)
+
+
+;;
+;; Macros
+
+(defmacro with-popup-rules! (rules &rest body)
+  "Evaluate BODY with popup RULES. RULES is a list of popup rules. Each rule
+should match the arguments of `+popup-define' or the :popup setting."
+  (declare (indent defun))
+  `(let ((+popup--display-buffer-alist +popup--old-display-buffer-alist)
+         display-buffer-alist)
+     (set-popup-rules! ,rules)
+     (when (bound-and-true-p +popup-mode)
+       (setq display-buffer-alist +popup--display-buffer-alist))
+     ,@body))
+
+(defmacro save-popups! (&rest body)
+  "Sets aside all popups before executing the original function, usually to
+prevent the popup(s) from messing up the UI (or vice versa)."
+  `(let* ((in-popup-p (+popup-buffer-p))
+          (popups (+popup-windows))
+          (+popup--inhibit-transient t)
+          +popup--last)
+     (dolist (p popups)
+       (+popup/close p 'force))
+     (unwind-protect
+         (progn ,@body)
+       (when popups
+         (let ((origin (selected-window)))
+           (+popup/restore)
+           (unless in-popup-p
+             (select-window origin)))))))
+
+
+(add-hook 'doom-init-ui-hook #'+popup-mode 'append)
+
+(add-hook! '+popup-buffer-mode-hook
+           #'+popup-adjust-fringes-h
+           #'+popup-adjust-margins-h
+           #'+popup-set-modeline-on-enable-h
+           #'+popup-unset-modeline-on-disable-h)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hacks.el
+
+;; Don't try to resize popup windows
+(advice-add #'balance-windows :around #'+popup-save-a)
+
+(defun +popup/quit-window ()
+  "The regular `quit-window' sometimes kills the popup buffer and switches to a
+buffer that shouldn't be in a popup. We prevent that by remapping `quit-window'
+to this commmand."
+  (interactive)
+  (let ((orig-buffer (current-buffer)))
+    (quit-window)
+    (when (and (eq orig-buffer (current-buffer))
+               (+popup-buffer-p))
+      (+popup/close nil 'force))))
+(global-set-key [remap quit-window] #'+popup/quit-window)
+
+
+;;
+;;; External functions
+
+;;;###package buff-menu
+(define-key Buffer-menu-mode-map (kbd "RET") #'Buffer-menu-other-window)
+
+
+;;;###package company
+(defadvice! +popup--dont-select-me-a (orig-fn &rest args)
+  :around #'company-show-doc-buffer
+  (let ((+popup--inhibit-select t))
+    (apply orig-fn args)))
+
+
+;;;###package eshell
+(progn
+  (setq eshell-destroy-buffer-when-process-dies t)
+
+  ;; When eshell runs a visual command (see `eshell-visual-commands'), it spawns
+  ;; a term buffer to run it in, but where it spawns it is the problem...
+  (defadvice! +popup--eshell-undedicate-popup (&rest _)
+    "Force spawned term buffer to share with the eshell popup (if necessary)."
+    :before #'eshell-exec-visual
+    (when (+popup-window-p)
+      (set-window-dedicated-p nil nil)
+      (add-transient-hook! #'eshell-query-kill-processes :after
+                           (set-window-dedicated-p nil t)))))
+
+
+;;;###package evil
+(progn
+  ;; Make evil-mode cooperate with popups
+  (defadvice! +popup--evil-command-window-a (hist cmd-key execute-fn)
+    "Monkey patch the evil command window to use `pop-to-buffer' instead of
+`switch-to-buffer', allowing the popup manager to handle it."
+    :override #'evil-command-window
+    (when (eq major-mode 'evil-command-window-mode)
+      (user-error "Cannot recursively open command line window"))
+    (dolist (win (window-list))
+      (when (equal (buffer-name (window-buffer win))
+                   "*Command Line*")
+        (kill-buffer (window-buffer win))
+        (delete-window win)))
+    (setq evil-command-window-current-buffer (current-buffer))
+    (ignore-errors (kill-buffer "*Command Line*"))
+    (with-current-buffer (pop-to-buffer "*Command Line*")
+      (setq-local evil-command-window-execute-fn execute-fn)
+      (setq-local evil-command-window-cmd-key cmd-key)
+      (evil-command-window-mode)
+      (evil-command-window-insert-commands hist)))
+
+  (defadvice! +popup--evil-command-window-execute-a ()
+    "Execute the command under the cursor in the appropriate buffer, rather than
+the command buffer."
+    :override #'evil-command-window-execute
+    (interactive)
+    (let ((result (buffer-substring (line-beginning-position)
+                                    (line-end-position)))
+          (execute-fn evil-command-window-execute-fn)
+          (execute-window (get-buffer-window evil-command-window-current-buffer))
+          (popup (selected-window)))
+      (if execute-window
+          (select-window execute-window)
+        (user-error "Originating buffer is no longer active"))
+      ;; (kill-buffer "*Command Line*")
+      (delete-window popup)
+      (funcall execute-fn result)
+      (setq evil-command-window-current-buffer nil)))
+
+  ;; Don't mess with popups
+  (advice-add #'+evil--window-swap           :around #'+popup-save-a)
+  (advice-add #'evil-window-move-very-bottom :around #'+popup-save-a)
+  (advice-add #'evil-window-move-very-top    :around #'+popup-save-a)
+  (advice-add #'evil-window-move-far-left    :around #'+popup-save-a)
+  (advice-add #'evil-window-move-far-right   :around #'+popup-save-a))
+
+
+;;;###package help-mode
+(after! help-mode
+  (defun +popup--switch-from-popup (location)
+    (let (origin enable-local-variables)
+      (save-popups!
+       (switch-to-buffer (car location) nil t)
+       (if (not (cdr location))
+           (message "Unable to find location in file")
+         (goto-char (cdr location))
+         (recenter)
+         (setq origin (selected-window))))
+      (select-window origin)))
+
+  ;; Help buffers use `pop-to-window' to decide where to open followed links,
+  ;; which can be unpredictable. It should *only* replace the original buffer we
+  ;; opened the popup from. To fix this these three button types need to be
+  ;; redefined to set aside the popup before following a link.
+  (define-button-type 'help-function-def
+    :supertype 'help-xref
+    'help-function
+    (lambda (fun file)
+      (require 'find-func)
+      (when (eq file 'C-source)
+        (setq file (help-C-file-name (indirect-function fun) 'fun)))
+      (+popup--switch-from-popup (find-function-search-for-symbol fun nil file))))
+
+  (define-button-type 'help-variable-def
+    :supertype 'help-xref
+    'help-function
+    (lambda (var &optional file)
+      (when (eq file 'C-source)
+        (setq file (help-C-file-name var 'var)))
+      (+popup--switch-from-popup (find-variable-noselect var file))))
+
+  (define-button-type 'help-face-def
+    :supertype 'help-xref
+    'help-function
+    (lambda (fun file)
+      (require 'find-func)
+      (+popup--switch-from-popup (find-function-search-for-symbol fun 'defface file)))))
+
+
+;;;###package helpful
+(defadvice! +popup--helpful-open-in-origin-window-a (button)
+  "Open links in non-popup, originating window rather than helpful's window."
+  :override #'helpful--navigate
+  (let ((path (substring-no-properties (button-get button 'path)))
+        enable-local-variables
+        origin)
+    (save-popups!
+     (find-file path)
+     (when-let (pos (get-text-property button 'position
+                                       (marker-buffer button)))
+       (goto-char pos))
+     (setq origin (selected-window))
+     (recenter))
+    (select-window origin)))
+
+
+;;;###package Info
+(defadvice! +popup--switch-to-info-window-a (&rest _)
+  :after #'info-lookup-symbol
+  (when-let (win (get-buffer-window "*info*"))
+    (when (+popup-window-p win)
+      (select-window win))))
+
+
+;;;###package neotree
+(after! neotree
+  (advice-add #'neo-util--set-window-width :override #'ignore)
+  (advice-remove #'balance-windows #'ad-Advice-balance-windows))
+
+
+;;;###package org
+(after! org
+  ;; Org has a scorched-earth window management policy I'm not fond of. i.e. it
+  ;; kills all other windows just so it can monopolize the frame. No thanks. We
+  ;; can do better ourselves.
+  (defadvice! +popup--suppress-delete-other-windows-a (orig-fn &rest args)
+    :around '(org-add-log-note
+              org-capture-place-template
+              org-export--dispatch-ui
+              org-agenda-get-restriction-and-command
+              org-fast-tag-selection
+              org-fast-todo-selection)
+    (if +popup-mode
+        (cl-letf (((symbol-function #'delete-other-windows)
+                   (symbol-function #'ignore)))
+          (apply orig-fn args))
+      (apply orig-fn args)))
+
+  (defadvice! +popup--org-fix-popup-window-shrinking-a (orig-fn &rest args)
+    "Hides the mode-line in *Org tags* buffer so you can actually see its
+content and displays it in a side window without deleting all other windows.
+Ugh, such an ugly hack."
+    :around '(org-fast-tag-selection
+              org-fast-todo-selection)
+    (if +popup-mode
+        (cl-letf* ((old-fit-buffer-fn (symbol-function #'org-fit-window-to-buffer))
+                   ((symbol-function #'org-fit-window-to-buffer)
+                    (lambda (&optional window max-height min-height shrink-only)
+                      (when-let (buf (window-buffer window))
+                        (delete-window window)
+                        (select-window
+                         (setq window (display-buffer-at-bottom buf nil)))
+                        (with-current-buffer buf
+                          (setq mode-line-format nil)))
+                      (funcall old-fit-buffer-fn window max-height min-height shrink-only))))
+          (apply orig-fn args))
+      (apply orig-fn args)))
+
+  ;; Ensure todo, agenda, and other minor popups are delegated to the popup system.
+  (defadvice! +popup--org-pop-to-buffer-a (orig-fn buf &optional norecord)
+    "Use `pop-to-buffer' instead of `switch-to-buffer' to open buffer.'"
+    :around #'org-switch-to-buffer-other-window
+    (if +popup-mode
+        (pop-to-buffer buf nil norecord)
+      (funcall orig-fn buf norecord))))
+
+
+;;;###package persp-mode
+(defadvice! +popup--persp-mode-restore-popups-a (&rest _)
+  "Restore popup windows when loading a perspective from file."
+  :after #'persp-load-state-from-file
+  (dolist (window (window-list))
+    (when (+popup-parameter 'popup window)
+      (+popup--init window nil))))
+
+
+;;;###package pdf-tools
+(after! pdf-tools
+  (setq tablist-context-window-display-action
+        '((+popup-display-buffer-stacked-side-window-fn)
+          (side . left)
+          (slot . 2)
+          (window-height . 0.3)
+          (inhibit-same-window . t))
+        pdf-annot-list-display-buffer-action
+        '((+popup-display-buffer-stacked-side-window-fn)
+          (side . left)
+          (slot . 3)
+          (inhibit-same-window . t))))
+
+
+;;;###package profiler
+(defadvice! +popup--profiler-report-find-entry-in-other-window-a (orig-fn function)
+  :around #'profiler-report-find-entry
+  (cl-letf (((symbol-function 'find-function)
+             (symbol-function 'find-function-other-window)))
+    (funcall orig-fn function)))
+
+
+;;;###package wgrep
+(progn
+  ;; close the popup after you're done with a wgrep buffer
+  (advice-add #'wgrep-abort-changes :after #'+popup-close-a)
+  (advice-add #'wgrep-finish-edit :after #'+popup-close-a))
+
+
+;;;###package which-key
+(after! which-key
+  (when (eq which-key-popup-type 'side-window)
+    (setq which-key-popup-type 'custom
+          which-key-custom-popup-max-dimensions-function
+          (lambda (_) (which-key--side-window-max-dimensions))
+          which-key-custom-hide-popup-function #'which-key--hide-buffer-side-window
+          which-key-custom-show-popup-function
+          (lambda (act-popup-dim)
+            (cl-letf (((symbol-function 'display-buffer-in-side-window)
+                       (lambda (buffer alist)
+                         (+popup-display-buffer-stacked-side-window-fn
+                          buffer (append '((vslot . -9999)) alist)))))
+              ;; HACK Fix #2219 where the which-key popup would get cut off.
+              (setcar act-popup-dim (1+ (car act-popup-dim)))
+              (which-key--show-buffer-side-window act-popup-dim))))))
+
+
+;;;###package windmove
+;; Users should be able to hop into popups easily, but Elisp shouldn't.
+(defadvice! +popup--ignore-window-parameters-a (orig-fn &rest args)
+  "Allow *interactive* window moving commands to traverse popups."
+  :around '(windmove-up windmove-down windmove-left windmove-right)
+  (cl-letf (((symbol-function #'windmove-find-other-window)
+             (lambda (dir &optional arg window)
+               (window-in-direction
+                (pcase dir (`up 'above) (`down 'below) (_ dir))
+                window (bound-and-true-p +popup-mode) arg windmove-wrap-around t))))
+    (apply orig-fn args)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; popup.el
 (defvar +popup--internal nil)
 
 (defun +popup--remember (windows)
@@ -605,17 +1025,197 @@ Accepts the same arguments as `display-buffer-in-side-window'. You must set
                         (window--display-buffer
                          buffer best-window 'reuse alist)))))))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; autoload/settings.el
 
-;;
-;; Emacs backwards compatibility
+;;;###autoload
+(defvar +popup--display-buffer-alist nil)
 
-;;(unless EMACS27+
-;;  (defadvice! +popup--set-window-dedicated-a (window)
-;;    "Ensure `window--display-buffer' respects `display-buffer-mark-dedicated'.
-;;
-;;This was not so until recent Emacs 27 builds, where it causes breaking errors.
-;;This advice ensures backwards compatibility for Emacs <= 26 users."
-;;    :filter-return #'window--display-buffer
-;;    (when (and (windowp window) display-buffer-mark-dedicated)
-;;      (set-window-dedicated-p window display-buffer-mark-dedicated))
-;;    window))
+;;;###autoload
+(defvar +popup-defaults
+  (list :side   'bottom
+        :height 0.16
+        :width  40
+        :quit   t
+        :select #'ignore
+        :ttl    5)
+  "Default properties for popup rules defined with `set-popup-rule!'.")
+
+;;;###autoload
+(defun +popup-make-rule (predicate plist)
+  (if (plist-get plist :ignore)
+      (list predicate nil)
+    (let* ((plist (append plist +popup-defaults))
+           (alist
+            `((actions       . ,(plist-get plist :actions))
+              (side          . ,(plist-get plist :side))
+              (size          . ,(plist-get plist :size))
+              (window-width  . ,(plist-get plist :width))
+              (window-height . ,(plist-get plist :height))
+              (slot          . ,(plist-get plist :slot))
+              (vslot         . ,(plist-get plist :vslot))))
+           (params
+            `((ttl      . ,(plist-get plist :ttl))
+              (quit     . ,(plist-get plist :quit))
+              (select   . ,(plist-get plist :select))
+              (modeline . ,(plist-get plist :modeline))
+              (autosave . ,(plist-get plist :autosave))
+              ,@(plist-get plist :parameters))))
+      `(,predicate (+popup-buffer)
+                   ,@alist
+                   (window-parameters ,@params)))))
+
+;;;###autodef
+(defun set-popup-rule! (predicate &rest plist)
+  "Define a popup rule.
+
+These rules affect buffers displayed with `pop-to-buffer' and `display-buffer'
+(or their siblings). Buffers displayed with `switch-to-buffer' (and its
+variants) will not be affected by these rules (as they are unaffected by
+`display-buffer-alist', which powers the popup management system).
+
+PREDICATE can be either a) a regexp string (matched against the buffer's name)
+or b) a function that takes two arguments (a buffer name and the ACTION argument
+of `display-buffer') and returns a boolean.
+
+PLIST can be made up of any of the following properties:
+
+:ignore BOOL
+  If BOOL is non-nil, popups matching PREDICATE will not be handled by the popup
+  system. Use this for buffers that have their own window management system like
+  magit or helm.
+
+:actions ACTIONS
+  ACTIONS is a list of functions or an alist containing (FUNCTION . ALIST). See
+  `display-buffer''s second argument for more information on its format and what
+  it accepts. If omitted, `+popup-default-display-buffer-actions' is used.
+
+:side 'bottom|'top|'left|'right
+  Which side of the frame to open the popup on. This is only respected if
+  `+popup-display-buffer-stacked-side-window-fn' or `display-buffer-in-side-window'
+  is in :actions or `+popup-default-display-buffer-actions'.
+
+:size/:width/:height FLOAT|INT|FN
+  Determines the size of the popup. If more tha one of these size properties are
+  given :size always takes precedence, and is mapped with window-width or
+  window-height depending on what :side the popup is opened. Setting a height
+  for a popup that opens on the left or right is harmless, but comes into play
+  if two popups occupy the same :vslot.
+
+  If a FLOAT (0 < x < 1), the number represents how much of the window will be
+    consumed by the popup (a percentage).
+  If an INT, the number determines the size in lines (height) or units of
+    character width (width).
+  If a function, it takes one argument: the popup window, and can do whatever it
+    wants with it, typically resize it, like `+popup-shrink-to-fit'.
+
+:slot/:vslot INT
+  (This only applies to popups with a :side and only if :actions is blank or
+  contains the `+popup-display-buffer-stacked-side-window-fn' action) These control
+  how multiple popups are laid out. INT can be any integer, positive and
+  negative.
+
+  :slot controls lateral positioning (e.g. the horizontal positioning for
+    top/bottom popups, or vertical positioning for left/right popups).
+  :vslot controls popup stacking (from the edge of the frame toward the center).
+
+  Let's assume popup A and B are opened with :side 'bottom, in that order.
+    If they possess the same :slot and :vslot, popup B will replace popup A.
+    If popup B has a higher :slot, it will open to the right of popup A.
+    If popup B has a lower :slot, it will open to the left of popup A.
+    If popup B has a higher :vslot, it will open above popup A.
+    If popup B has a lower :vslot, it will open below popup A.
+
+:ttl INT|BOOL|FN
+  Stands for time-to-live. It can be t, an integer, nil or a function. This
+  controls how (and if) the popup system will clean up after the popup.
+
+  If any non-zero integer, wait that many seconds before killing the buffer (and
+    any associated processes).
+  If 0, the buffer is immediately killed.
+  If nil, the buffer won't be killed and is left to its own devices.
+  If t, resort to the default :ttl in `+popup-defaults'. If none exists, this is
+    the same as nil.
+  If a function, it takes one argument: the target popup buffer. The popup
+    system does nothing else and ignores the function's return value.
+
+:quit FN|BOOL|'other|'current
+  Can be t, 'other, 'current, nil, or a function. This determines the behavior
+  of the ESC/C-g keys in or outside of popup windows.
+
+  If t, close the popup if ESC/C-g is pressed anywhere.
+  If 'other, close this popup if ESC/C-g is pressed outside of any popup. This
+    is great for popups you may press ESC/C-g a lot in.
+  If 'current, close the current popup if ESC/C-g is pressed from inside of the
+    popup. This makes it harder to accidentally close a popup until you really
+    want to.
+  If nil, pressing ESC/C-g will never close this popup.
+  If a function, it takes one argument: the to-be-closed popup window, and is
+    run when ESC/C-g is pressed while that popup is open. It must return one of
+    the other values to determine the fate of the popup.
+
+:select BOOL|FN
+  Can be a boolean or function. The boolean determines whether to focus the
+  popup window after it opens (non-nil) or focus the origin window (nil).
+
+  If a function, it takes two arguments: the popup window and originating window
+    (where you were before the popup opened). The popup system does nothing else
+    and ignores the function's return value.
+
+:modeline BOOL|FN|LIST
+  Can be t (show the default modeline), nil (show no modeline), a function that
+  returns a modeline format or a valid value for `mode-line-format' to be used
+  verbatim. The function takes no arguments and is run in the context of the
+  popup buffer.
+
+:autosave BOOL|FN
+  This parameter determines what to do with modified buffers when closing popup
+  windows. It accepts t, 'ignore, a function or nil.
+
+  If t, no prompts. Just save them automatically (if they're file-visiting
+    buffers). Same as 'ignore for non-file-visiting buffers.
+  If nil (the default), prompt the user what to do if the buffer is
+    file-visiting and modified.
+  If 'ignore, no prompts, no saving. Just silently kill it.
+  If a function, it is run with one argument: the popup buffer, and must return
+    non-nil to save or nil to do nothing (but no prompts).
+
+:parameters ALIST
+  An alist of custom window parameters. See `(elisp)Window Parameters'.
+
+If any of these are omitted, defaults derived from `+popup-defaults' will be
+used.
+
+\(fn PREDICATE &key IGNORE ACTIONS SIDE SIZE WIDTH HEIGHT SLOT VSLOT TTL QUIT SELECT MODELINE AUTOSAVE PARAMETERS)"
+  (declare (indent defun))
+  (push (+popup-make-rule predicate plist) +popup--display-buffer-alist)
+  (when (bound-and-true-p +popup-mode)
+    (setq display-buffer-alist +popup--display-buffer-alist))
+  +popup--display-buffer-alist)
+
+;;;###autodef
+(defun set-popup-rules! (&rest rulesets)
+  "Defines multiple popup rules.
+
+Every entry in RULESETS should be a list of alists where the CAR is the
+predicate and CDR is a plist. See `set-popup-rule!' for details on the predicate
+and plist.
+
+Example:
+
+  (set-popup-rules!
+    '((\"^ \\*\" :slot 1 :vslot -1 :size #'+popup-shrink-to-fit)
+      (\"^\\*\"  :slot 1 :vslot -1 :select t))
+    '((\"^\\*Completions\" :slot -1 :vslot -2 :ttl 0)
+      (\"^\\*Compil\\(?:ation\\|e-Log\\)\" :size 0.3 :ttl 0 :quit t)))"
+  (declare (indent 0))
+  (dolist (rules rulesets)
+    (dolist (rule rules)
+      (push (+popup-make-rule (car rule) (cdr rule))
+            +popup--display-buffer-alist)))
+  (when (bound-and-true-p +popup-mode)
+    (setq display-buffer-alist +popup--display-buffer-alist))
+  +popup--display-buffer-alist)
+
+
+(provide '+doom/popup)
