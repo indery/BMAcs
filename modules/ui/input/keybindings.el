@@ -34,8 +34,8 @@
    "wu" 'winner-undo
    "wr" 'winner-redo
    "wm" 'delete-other-windows
-   "ws" 'split-window-vertically
-   "wv" 'split-window-horizontally
+   "w-" 'split-window-vertically
+   "w/" 'split-window-horizontally
    "wh" 'evil-window-left
    "wl" 'evil-window-right
    "wk" 'evil-window-up

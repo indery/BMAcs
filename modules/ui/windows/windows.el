@@ -1,11 +1,7 @@
 
 (use-package winum
   :config
-  (winum-mode)
-
-  )
-
-
+  (winum-mode))
 
 (with-eval-after-load 'general
   (general-define-key
@@ -22,4 +18,4 @@
    "8" 'winum-select-window-8
    "9" 'winum-select-window-9
    )
-)
+  )

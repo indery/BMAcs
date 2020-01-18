@@ -1,6 +1,6 @@
 
 
-(setenv "GOPATH" (concat (getenv "HOME") "/code/toolkits/go/") )  
+(setenv "GOPATH" (concat (getenv "HOME") "/toolkits/go/") )  
 
 (add-to-list 'exec-path  (concat (getenv "GOPATH") "bin/"))
 
@@ -41,27 +41,20 @@
    lsp-enable-indentation t
    lsp-enable-snippet t
    lsp-prefer-flymake nil
-   )
-
-)
+   ))
   
 
 (use-package go-eldoc
   :after go-mode
-  :hook (go-mode . go-eldoc-setup)
-  )
+  :hook (go-mode . go-eldoc-setup))
 
 (use-package go-guru
   :after go-mode
-  :hook (go-mode . go-guru-hl-identifier-mode)
-  )
+  :hook (go-mode . go-guru-hl-identifier-mode))
 
 
 (use-package gorepl-mode
   :after go-mode
-  :hook (go-mode . gorepl-mode)
-  
- )
+  :hook (go-mode . gorepl-mode))
 
-(use-package go-rename
-  )
+(use-package go-rename)

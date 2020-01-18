@@ -4,8 +4,8 @@
   (setq
    projectile-enable-caching 1
 
-   projectile-project-search-path '("~/code")
-   ;projectile-project-root-files-functions '(projectile-root-top-down)
+   projectile-project-search-path '("~/Workspace/code/")
+					;projectile-project-root-files-functions '(projectile-root-top-down)
    projectile-globally-ignored-files '("~" ".swp") 
 
    projectile-completion-system 'ivy
@@ -16,6 +16,13 @@
   (projectile-global-mode)
   )
 
+(defun +projectile-open-project ()
+  (interactive)
+  ;; TODO: change car to a actual variable
+  (let (( new-project-dir (read-file-name "New Project Dir: " (car projectile-project-search-path))))
+    (projectile-add-known-project new-project-dir)
+    ;; TODO: Open projectile project
+    (projectile-switch-open-project new-project-dir)))
 
 ;;FIXME install counsel explicitly with ivy
 (use-package counsel-projectile

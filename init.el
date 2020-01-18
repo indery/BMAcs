@@ -9,15 +9,17 @@
       create-lockfiles nil)
 
 
+;; Disable scrollbar
 (setq scroll-bar-mode -1)
-(menu-bar-showhide-tool-bar-menu-customize-disable) 
 
 ;; make the titlebar "transparent" in osx
 (add-to-list 'default-frame-alist
              '(ns-transparent-titlebar . t))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; straight.el Boostrap 
+;; disable the emacs menubar
+(menu-bar-showhide-tool-bar-menu-customize-disable) 
+;;--------------------------------------------------------------------------------
+;; straight.el Boostrap block
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -32,7 +34,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
-(setq straight-use-package-by-default t) 
+(setq straight-use-package-by-default t)
 
 (setq vc-follow-symlinks t)
 
@@ -41,70 +43,61 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Additional core elisp libraries
-
+;; collection of elisp standard libraries elisp++
 (use-package dash)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Module/file loading
 
-;; main directories
-(setq home-dir "/Users/jeff")   
-(setq system-config-root "~/code/dotfiles/")
-(setq emacs-config-root "~/.config/emacs/")
-(setq modules-root (concat emacs-config-root "modules/") )
-(setq package-repos-dir "~/.config/emacs/straight/repos/")
+(setq emacs-config-root (file-name-directory load-file-name))
 
-(defun get-all-package-files ()
-  (directory-files-recursively package-repos-dir "\\.el$" t)
-  )
+;;(add-to-list 'load-path emacs-config-root)
 
-(setq package-files-list nil)
+;; setup environment specific config
+(load-file  (concat emacs-config-root "env.el"))
 
+;; package files list cache
+(defvar package-files-list nil)
+
+;; returns all package files
 (defun get-all-package-files-cached ()
   (if package-files-list package-files-list
-    (refresh-package-files-list)
-    )
-  )
+    (refresh-package-files-list)))
 
+;; updates the package files list cache with all the package files
 (defun refresh-package-files-list ()
   (interactive)
-  (setq package-files-list (get-all-package-files))
-  )
+  (setq package-files-list (get-all-package-files)))
 
-;; search Regexes
-(setq all-elisp-files-regex "\\.el$")
+;; recursively get all installed packages that are installed on the system
+(defun get-all-package-files ()
+  (directory-files-recursively package-repos-root "\\.el$" t))
 
-(setq dev-files-regex 
-      ".*\.\\(dev\\)\.el$")
 
-(setq test-files-regex
-      ".*\.\\(test\\)\.el$")
+;; search regexes
+(setq
+ all-elisp-files-regex "\\.el$"
+ dev-files-regex ".*\.\\(dev\\)\.el$"
+ test-files-regex ".*\.\\(test\\)\.el$")
 
 (defun get-all-config-files ()
-  (directory-files-recursively modules-root all-elisp-files-regex)
-  )
+  (directory-files-recursively modules-root all-elisp-files-regex))
+
 
 ;; essentially, any files ending in ".dev.el" or ".test.el" will *not* be loaded
 ;; this way, we can mix some scratch/dev files with actual config files
 (defun get-load-files ()
-  (--filter (not (or  (string-match-p dev-files-regex it)
-		      (string-match-p test-files-regex it)))
-	    (get-all-config-files))
-  )
-
-;;(defun get-modules-list ()
-;;  (directory-files-recursively modules-root all-elisp-files-regex))
+  (--filter (not (or (string-match-p dev-files-regex it)
+		     (string-match-p test-files-regex it)))
+	    (get-all-config-files)))
 
 (defun get-modules-directories ()
   (-filter (lambda (x) (not (string-match all-elisp-files-regex x)))
-           (directory-files-recursively modules-root ".*" t)
-           )
-  )
+	   (directory-files-recursively modules-root ".*" t)))
 
-(defun load-all-config-files () 
+(defun load-all-config-files ()
   (interactive)
-  (mapc (lambda (f) (load-file f)) (get-load-files))
-)
+  (mapc (lambda (f) (load-file f)) (get-load-files)))
 
 (load-all-config-files)
 
