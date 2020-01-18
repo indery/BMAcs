@@ -1,0 +1,4 @@
+* 1-18-2020
+** Goals:
+*** 1. Lock down Keybinding Schema
+*** 2. Start implemention of keybindings schema skeleton in Doom's Map
