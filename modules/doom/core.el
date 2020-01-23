@@ -496,5 +496,9 @@ This is a wrapper around `eval-after-load' that:
                (setq body `((after! ,next ,@body))))
              (car body))))))
 
+
+(use-package hide-mode-line)
+
+
 (provide '+doom/core)
 ;;; core-lib.el ends here
