@@ -26,8 +26,8 @@
 
 	'(
 	  (counsel-shell-history . ivy-posframe-display-at-point)
-	  (counsel-git-grep . ivy-display-function-fallback)
-	  (counsel-rg . ivy-display-function-fallback)
+	  ;;(counsel-git-grep . ivy-display-function-fallback)
+	  ;;(counsel-rg . ivy-display-function-fallback)
 	  (swiper . ivy-posframe-display-at-window-bottom-left)
 	  (t . ivy-posframe-display-at-frame-center)))
 
