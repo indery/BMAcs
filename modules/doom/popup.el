@@ -1217,5 +1217,5 @@ Example:
     (setq display-buffer-alist +popup--display-buffer-alist))
   +popup--display-buffer-alist)
 
-
+(+popup-mode)
 (provide '+doom/popup)
