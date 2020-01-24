@@ -40,6 +40,7 @@
    "wl" 'evil-window-right
    "wk" 'evil-window-up
    "wj" 'evil-window-down
+   "wb" 'balance-windows
 
    "bd" 'evil-delete-buffer
    "br" 'revert-buffer
