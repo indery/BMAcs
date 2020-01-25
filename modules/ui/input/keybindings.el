@@ -1,84 +1,80 @@
-(with-eval-after-load 'general
-  (general-define-key
-   "M-w" 'delete-frame
-   )
-  (general-define-key
-   :states '(normal movement)
-   "/" 'swiper
-   )
+
+(with-eval-after-load 'doom/keybinds
+
+  (map!
+   :leader
+   (:prefix ("b" . "buffer")
+					; :desc "Toggle narrowing"            "-"   #'doom/toggle-narrow-buffer
+     :desc "Switch buffer"               "b"   #'switch-to-buffer
+     :desc "Kill buffer"                 "d"   #'kill-current-buffer
+     :desc "ibuffer"                     "i"   #'ibuffer
+     :desc "Kill buffer"                 "k"   #'kill-current-buffer
+     :desc "Kill all buffers"            "K"   #'doom/kill-all-buffers
+     :desc "Switch to last buffer"       "l"   #'evil-switch-to-windows-last-buffer
+					;   :desc "Set bookmark"                "m"   #'bookmark-set
+					;   :desc "Delete bookmark"             "M"   #'bookmark-delete
+     :desc "Next buffer"                 "n"   #'next-buffer
+					;   :desc "New empty buffer"            "N"   #'evil-buffer-new
+					;   :desc "Kill other buffers"          "O"   #'doom/kill-other-buffers
+     :desc "Previous buffer"             "p"   #'previous-buffer
+
+     :desc "Revert buffer"               "r"   #'revert-buffer
+     :desc "Save buffer"                 "s"   #'basic-save-buffer
+     :desc "Save all buffers"            "S"   #'evil-write-all
+     :desc "Save buffer as root"         "u"   #'doom/sudo-save-buffer
+
+     :desc "Pop up scratch buffer"       "x"   #'doom/open-scratch-buffer
+     :desc "Switch to scratch buffer"    "X"   #'doom/switch-to-scratch-buffer
+
+     :desc "Bury buffer"                 "z"   #'bury-buffer
+     :desc "Kill buried buffers"         "Z"   #'doom/kill-buried-buffers)
+
+   (:prefix ("p" . "project")
+
+     :desc "Find file in project"         "f" #'counsel-projectile-find-file
+     :desc "Switch project"               "p" #'counsel-projectile-switch-project
+     :desc "Run project"                  "R" #'projectile-run-project
 
 
-  ;; TODO - this should be split into keymaps - that are referenced by major mode bindings  declared in other areas
-  ;; eg - keymaps for org-mode should be controlled completely by the org config code, and that code should reference
-  ;; more general keymaps like the stuff here
-  (general-define-key
-   :states '(normal visual emacs movement treemacs)
-   :prefix "SPC"
-   :non-normal-prefix "M-SPC"
-   "c" 'hydra-config-actions/body
-   "SPC" 'counsel-M-x
-   "ff" 'find-file
-   "fs" 'save-buffer
+     :desc "Invalidate project cache"     "i" #'projectile-invalidate-cache
 
-   ;;   "hf" 'counsel-describe-function
-   ;;   "hv" 'counsel-describe-variable
-   ;;   "hk" 'describe-key
+     :desc "Find recent project files"    "r" #'projectile-recentf
+     :desc "Save project files"           "s" #'projectile-save-project-buffers
+     :desc "Configure project"            "g" #'projectile-configure-project
+     :desc "Edit project .dir-locals"     "e" #'projectile-edit-dir-locals
+     :desc "Find other file"              "o" #'projectile-find-other-file
 
-   "tl" 'toggle-truncate-lines
-   "tn" 'display-line-numbers-mode
-   "tt" 'treemacs
+     :desc "Open project in treemacs"     "t" #'+treemacs-open-current-project
+     )
 
-   "wd" 'delete-window
-   "ww"  'ace-window
-   "wx" 'ace-swap-window
-   "wu" 'winner-undo
-   "wr" 'winner-redo
-   "wm" 'delete-other-windows
-   "ws" 'split-window-vertically
-   "wv" 'split-window-horizontally
-   "wh" 'evil-window-left
-   "wl" 'evil-window-right
-   "wk" 'evil-window-up
-   "wj" 'evil-window-down
-   "wb" 'balance-windows
+   (:prefix ("f" . "file")
+     :desc "Delete current buffer file" "d" '+delete-file-and-buffer
+     :desc "Rename current buffer file" "r" '+rename-file-and-buffer
+     :desc "Find file"                   "f"   #'find-file
+     :desc "Save file"                   "s"   #'save-buffer
+     )
 
-   "bd" 'evil-delete-buffer
-   "br" 'revert-buffer
-   "bb" 'counsel-switch-buffer
-   "bp" 'previous-buffer
-   "bn" 'next-buffer
-   "bs" '(lambda () (interactive) (pop-to-buffer "*scratch*"))
+   (:prefix ("w" . "window")
 
-   "pf" 'counsel-projectile-find-file
-   "pp" 'counsel-projectile-switch-project
-   "pr" '(lambda () (interactive) (funcall run-project-func))
-   "ps" 'counsel-projectile-rg
-   "pt" '+treemacs-open-current-project
+     :desc "delete window" "d" 'delete-window
+     :desc "ace window" "w"  'ace-window
+     :desc "ace swap window" "x" 'ace-swap-window
+     :desc "window undo" "u" 'winner-undo
+     :desc "window undo" "r" 'winner-redo
+     :desc "delete other windows" "m" 'delete-other-windows
+     :desc "split-window-vertically" "s" 'split-window-vertically
+     :desc "split-window-horizontally" "v" 'split-window-horizontally
+     :desc "focus window Left" "h" 'evil-window-left
+     :desc "focus window right" "l" 'evil-window-right
+     :desc "focus window up" "k" 'evil-window-up
+     :desc "focus window down" "j" 'evil-window-down
+     :desc "balance windows" "b" 'balance-windows
+     )
 
-   "rt" '(lambda () (interactive) (funcall run-test-func))
+   ))
+(map!
+ :leader
+ (:prefix ("t" . "Test Binds")
+   :desc "test a" "a" '()
 
-   "ag" 'magit-status
-   "aa" 'org-agenda
-
-   "'" '+eshell-pop-window
-
-   "ee" 'eval-last-sexp
-   "ep" 'eval-print-last-sexp
-   "eb" 'eval-buffer
-   "er" 'eval-region
-   "ed" 'eval-defun
-
-   "sd" '(lambda () (interactive) (counsel-rg nil default-directory))
-
-   "fd" '+delete-file-and-buffer
-   "fr" '+rename-file-and-buffer
-   )
-
-  ;;we want the ESC key to be able to quit/escape out of *anything*
-  (general-define-key
-   [remap evil-force-normal-state] 'keyboard-quit
-   )
-  )
-
-
-(provide '+bindings) 
+   ))
