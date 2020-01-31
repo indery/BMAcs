@@ -10,6 +10,8 @@
   (setq counsel-switch-buffer-preview-virtual-buffers nil)
   (setq ivy-re-builders-alist
 	'((t . ivy--regex-ignore-order)))
+
+  (setq ivy-dynamic-exhibit-delay-ms 10)  
   :config (ivy-mode 1))
 
 (use-package ivy-posframe 

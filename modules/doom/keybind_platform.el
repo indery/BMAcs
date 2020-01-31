@@ -1,3 +1,4 @@
+;;; core-keybinds.el -*- lexical-binding: t; -*-
 
 (require '+doom/core)
 
@@ -28,7 +29,7 @@ and Emacs states, and for non-evil users.")
 ;;; Keybind settings
 
 (setq mac-command-modifier 'super
-        mac-option-modifier 'meta)
+      mac-option-modifier 'meta) 
 
 
 ;;
@@ -102,11 +103,11 @@ all hooks after it are ignored.")
             (when-let (desc (cadr (memq :which-key udef)))
               (prependq!
                wkforms `((which-key-add-key-based-replacements
-                          (general--concat t doom-leader-alt-key ,key)
-                          ,desc)
+                           (general--concat t doom-leader-alt-key ,key)
+                           ,desc)
                          (which-key-add-key-based-replacements
-                          (general--concat t doom-leader-key ,key)
-                          ,desc))))))))
+                           (general--concat t doom-leader-key ,key)
+                           ,desc))))))))
     (macroexp-progn
      (cons `(after! which-key ,@(nreverse wkforms))
            (nreverse forms)))))
@@ -175,25 +176,25 @@ localleader prefix."
 ;;; Packages
 
 (use-package which-key
-	      :defer 1
-	    ;;  :after-call pre-command-hook
-	      :init
-	      (setq which-key-sort-order #'which-key-prefix-then-key-order
-		    which-key-sort-uppercase-first nil
-		    which-key-add-column-padding 1
-		    which-key-max-display-columns nil
-		    which-key-min-display-lines 6
-		    which-key-side-window-slot -10)
-	      :config
-	      ;; general improvements to which-key readability
-	      (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
-	      (which-key-setup-side-window-bottom)
-	      (setq-hook! 'which-key-init-buffer-hook line-spacing 3)
+  :defer 1
+  ;;:after-call pre-command-hook
+  :init
+  (setq which-key-sort-order #'which-key-prefix-then-key-order
+	which-key-sort-uppercase-first nil
+	which-key-add-column-padding 1
+	which-key-max-display-columns nil
+	which-key-min-display-lines 6
+	which-key-side-window-slot -10)
+  :config
+  ;; general improvements to which-key readability
+  (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
+  (which-key-setup-side-window-bottom)
+  (setq-hook! 'which-key-init-buffer-hook line-spacing 3)
 
-	      (which-key-add-key-based-replacements doom-leader-key "<leader>")
-	      (which-key-add-key-based-replacements doom-localleader-key "<localleader>")
+  (which-key-add-key-based-replacements doom-leader-key "<leader>")
+  (which-key-add-key-based-replacements doom-localleader-key "<localleader>")
 
-	      (which-key-mode +1))
+  (which-key-mode +1))
 
 
 ;;
@@ -252,43 +253,43 @@ For example, :nvi will map to (list 'normal 'visual 'insert). See
               ((keywordp key)
                (pcase key
                  (:leader
-                  (doom--map-commit)
-                  (setq doom--map-fn 'doom--define-leader-key))
+                   (doom--map-commit)
+                   (setq doom--map-fn 'doom--define-leader-key))
                  (:localleader
-                  (doom--map-commit)
-                  (setq doom--map-fn 'define-localleader-key!))
+                   (doom--map-commit)
+                   (setq doom--map-fn 'define-localleader-key!))
                  (:after
-                  (doom--map-nested (list 'after! (pop rest)) rest)
-                  (setq rest nil))
+                   (doom--map-nested (list 'after! (pop rest)) rest)
+                   (setq rest nil))
                  (:desc
-                  (setq desc (pop rest)))
+                   (setq desc (pop rest)))
                  (:map
-                  (doom--map-set :keymaps `(quote ,(doom-enlist (pop rest)))))
+                   (doom--map-set :keymaps `(quote ,(doom-enlist (pop rest)))))
                  (:mode
-                  (push (cl-loop for m in (doom-enlist (pop rest))
-                                 collect (intern (concat (symbol-name m) "-map")))
-                        rest)
-                  (push :map rest))
+                   (push (cl-loop for m in (doom-enlist (pop rest))
+                                  collect (intern (concat (symbol-name m) "-map")))
+                         rest)
+                   (push :map rest))
                  ((or :when :unless)
                   (doom--map-nested (list (intern (doom-keyword-name key)) (pop rest)) rest)
                   (setq rest nil))
                  (:prefix-map
-                  (cl-destructuring-bind (prefix . desc)
-                      (doom-enlist (pop rest))
-                    (let ((keymap (intern (format "doom-leader-%s-map" desc))))
-                      (setq rest
-                            (append (list :desc desc prefix keymap
-                                          :prefix prefix)
-                                    rest))
-                      (push `(defvar ,keymap (make-sparse-keymap))
-                            doom--map-forms))))
+                   (cl-destructuring-bind (prefix . desc)
+                       (doom-enlist (pop rest))
+                     (let ((keymap (intern (format "doom-leader-%s-map" desc))))
+                       (setq rest
+                             (append (list :desc desc prefix keymap
+                                           :prefix prefix)
+                                     rest))
+                       (push `(defvar ,keymap (make-sparse-keymap))
+                             doom--map-forms))))
                  (:prefix
-                  (cl-destructuring-bind (prefix . desc)
-                      (doom-enlist (pop rest))
-                    (doom--map-set (if doom--map-fn :infix :prefix)
-                                   prefix)
-                    (when (stringp desc)
-                      (setq rest (append (list :desc desc "" nil) rest)))))
+                   (cl-destructuring-bind (prefix . desc)
+                       (doom-enlist (pop rest))
+                     (doom--map-set (if doom--map-fn :infix :prefix)
+                                    prefix)
+                     (when (stringp desc)
+                       (setq rest (append (list :desc desc "" nil) rest)))))
                  (:textobj
                   (let* ((key (pop rest))
                          (inner (pop rest))
@@ -421,5 +422,5 @@ Properties
   certain group of keybinds."
   (doom--map-process rest))
 
-(provide 'doom/keybinds)
+(provide 'doom/keybind-platform)
 ;;; core-keybinds.el ends here
