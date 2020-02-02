@@ -52,11 +52,5 @@
     )
 
   )
-(defun +open-edebug-eval-list ()
-  (interactive)
-  (let ((edebug-pop-to-buffer #'pop-to-buffer))
-    (edebug-visit-eval-list)
-    )
-  )
 
 (provide '+elisp)
