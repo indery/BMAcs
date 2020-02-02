@@ -11,9 +11,5 @@
   )
 
 
-(add-to-list 'display-buffer-alist
-	     `("magit:"
-	       (display-buffer-in-side-window)
-	       (side . right)
-	       (window-width . 100)
-	       ))
+(set-popup-rule!
+  "^magit" :side 'right :slot -1 :size 0.35 :select t) 

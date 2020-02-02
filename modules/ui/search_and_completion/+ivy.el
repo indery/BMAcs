@@ -8,6 +8,10 @@
   (setq completion-ignored-extensions '("~" ".swp" "#")) 
 
   (setq counsel-switch-buffer-preview-virtual-buffers nil)
+  (setq ivy-re-builders-alist
+	'((t . ivy--regex-ignore-order)))
+
+  (setq ivy-dynamic-exhibit-delay-ms 10)  
   :config (ivy-mode 1))
 
 (use-package ivy-posframe 
@@ -24,8 +28,8 @@
 
 	'(
 	  (counsel-shell-history . ivy-posframe-display-at-point)
-	  (counsel-git-grep . ivy-display-function-fallback)
-	  (counsel-rg . ivy-display-function-fallback)
+	  ;;(counsel-git-grep . ivy-display-function-fallback)
+	  ;;(counsel-rg . ivy-display-function-fallback)
 	  (swiper . ivy-posframe-display-at-window-bottom-left)
 	  (t . ivy-posframe-display-at-frame-center)))
 
@@ -44,57 +48,60 @@
 		    (all-the-icons-icon-for-mode 'fundamental-mode) icon))))
   (setq ivy-rich--display-transformers-list '(
 
-	  counsel-switch-buffer 
-	  (:columns ((ivy-rich-switch-buffer-icon :width 2) 
-		     (ivy-rich-candidate 
-		      (:width 30)) 
-		     (ivy-rich-switch-buffer-size 
-		      (:width 7)) 
-		     (ivy-rich-switch-buffer-indicators 
-		      (:width 4 
-			      :face error 
-			      :align right)) 
-		     (ivy-rich-switch-buffer-major-mode 
-		      (:width 12 
-			      :face warning)) 
-		     (ivy-rich-switch-buffer-project 
-		      (:width 15 
-			      :face success)) 
-		     (ivy-rich-switch-buffer-path 
-		      (:width (lambda (x) 
-				(ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width
-									0.3)))))) 
-		    :predicate (lambda (cand) 
-				 (get-buffer cand)))
+					      counsel-switch-buffer 
+					      (:columns ((ivy-rich-switch-buffer-icon :width 2) 
+							 (ivy-rich-candidate 
+							  (:width 30)) 
+							 (ivy-rich-switch-buffer-size 
+							  (:width 7)) 
+							 (ivy-rich-switch-buffer-indicators 
+							  (:width 4 
+								  :face error 
+								  :align right)) 
+							 (ivy-rich-switch-buffer-major-mode 
+							  (:width 12 
+								  :face warning)) 
+							 (ivy-rich-switch-buffer-project 
+							  (:width 15 
+								  :face success)) 
+							 (ivy-rich-switch-buffer-path 
+							  (:width (lambda (x) 
+								    (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width
+													    0.3)))))) 
+							:predicate (lambda (cand) 
+								     (get-buffer cand)))
 
-	  counsel-M-x 
-	  (:columns ((counsel-M-x-transformer 
-		      (:width 40))	; thr original transformer
-		     (ivy-rich-counsel-function-docstring 
-		      (:face font-lock-doc-face)))) ; return the docstring of the command
+					      counsel-M-x 
+					      (:columns ((counsel-M-x-transformer 
+							  (:width 40))	; thr original transformer
+							 (ivy-rich-counsel-function-docstring 
+							  (:face font-lock-doc-face)))) ; return the docstring of the command
 
-	  counsel-describe-function 
-	  (:columns ((counsel-describe-function-transformer 
-		      (:width 40))	; the original transformer
-		     (ivy-rich-counsel-function-docstring 
-		      (:face font-lock-doc-face)))) ; return the docstring of the function
+					      counsel-describe-function 
+					      (:columns ((counsel-describe-function-transformer 
+							  (:width 40))	; the original transformer
+							 (ivy-rich-counsel-function-docstring 
+							  (:face font-lock-doc-face)))) ; return the docstring of the function
 
-	  counsel-describe-variable 
-	  (:columns ((counsel-describe-variable-transformer 
-		      (:width 40))	; the original transformer
-		     (ivy-rich-counsel-variable-docstring 
-		      (:face font-lock-doc-face)))) ; return the docstring of the variable
+					      counsel-describe-variable 
+					      (:columns ((counsel-describe-variable-transformer 
+							  (:width 40))	; the original transformer
+							 (ivy-rich-counsel-variable-docstring 
+							  (:face font-lock-doc-face)))) ; return the docstring of the variable
 
-	  counsel-recentf 
-	  (:columns ((ivy-rich-candidate 
-		      (:width 0.8))	; return the candidate itself
-		     (ivy-rich-file-last-modified-time 
-		      (:face font-lock-comment-face))))) ; return the last modified time of the file
+					      counsel-recentf 
+					      (:columns ((ivy-rich-candidate 
+							  (:width 0.8))	; return the candidate itself
+							 (ivy-rich-file-last-modified-time 
+							  (:face font-lock-comment-face))))) ; return the last modified time of the file
 	) 
   (ivy-rich-mode 1)
 
 
   )
+
+
+
 
 
 

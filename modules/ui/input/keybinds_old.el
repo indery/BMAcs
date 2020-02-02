@@ -40,6 +40,7 @@
    "wl" 'evil-window-right
    "wk" 'evil-window-up
    "wj" 'evil-window-down
+   "wb" 'balance-windows
 
    "bd" 'evil-delete-buffer
    "br" 'revert-buffer
@@ -59,12 +60,13 @@
    "ag" 'magit-status
    "aa" 'org-agenda
 
-   "'" '+eshell-pop-window
+   "'" '+eshell-pop-window	   
 
    "ee" 'eval-last-sexp
    "ep" 'eval-print-last-sexp
-   "eb" 'eval-buffer
-   "er" 'eval-region
+
+   "eb" '+eval/buffer
+   "er" 'python-shell-send-region
    "ed" 'eval-defun
 
    "sd" '(lambda () (interactive) (counsel-rg nil default-directory))

@@ -14,3 +14,23 @@
   )
 
 
+
+(defhydra hydra-inbox-processing (
+				  :color teal
+				  :title "Inbox Processing Actions")
+
+
+  ;; set state
+  ("s" org-todo)
+
+  ;; set resources/contexts
+
+  ;; set blockers 
+  
+  ;;tag
+  ("t" org-tag-set-tags)
+
+
+  ;; refile
+
+  )
