@@ -40,4 +40,23 @@
    
 (setq +doc-at-point-func 'describe-function-in-popup)
 
+(set-popup-rule!
+  "^\\*edebug" :side 'right :size 0.25 :slot 1 :modeline t) 
+
+(set-popup-rule!
+  "^\\*scratch" :side 'right :size 0.25 :slot 2 :modeline t) 
+
+(after! edebug
+  (defun edebug-pop-to-buffer (buffer &optional window)
+    (pop-to-buffer buffer)
+    )
+
+  )
+(defun +open-edebug-eval-list ()
+  (interactive)
+  (let ((edebug-pop-to-buffer #'pop-to-buffer))
+    (edebug-visit-eval-list)
+    )
+  )
+
 (provide '+elisp)
