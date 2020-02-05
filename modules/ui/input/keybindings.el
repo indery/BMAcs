@@ -5,6 +5,9 @@
      :leader
 
      :desc "M-x"                   "SPC"    #'counsel-M-x
+     :desc "configuration actions" "c" #'hydra-config-actions/body
+
+     :desc "open eshell"    "'" '+eshell-pop-window	   
      
      (:prefix ("b" . "buffer")
 					; :desc "Toggle narrowing"            "-"   #'doom/toggle-narrow-buffer
@@ -20,33 +23,31 @@
 					;   :desc "New empty buffer"            "N"   #'evil-buffer-new
 					;   :desc "Kill other buffers"          "O"   #'doom/kill-other-buffers
        :desc "Previous buffer"             "p"   #'previous-buffer
-
        :desc "Revert buffer"               "r"   #'revert-buffer
        :desc "Save buffer"                 "s"   #'basic-save-buffer
        :desc "Save all buffers"            "S"   #'evil-write-all
        :desc "Save buffer as root"         "u"   #'doom/sudo-save-buffer
-
        :desc "Pop up scratch buffer"       "x"   #'doom/open-scratch-buffer
        :desc "Switch to scratch buffer"    "X"   #'doom/switch-to-scratch-buffer
-
        :desc "Bury buffer"                 "z"   #'bury-buffer
        :desc "Kill buried buffers"         "Z"   #'doom/kill-buried-buffers)
 
-     (:prefix ("p" . "project")
+     (:prefix ("g" . "git/revision-control")
+       :desc "Git Status"     "s"    #'magit-status
+       :desc "Git Blame"     "b"    #'magit-blame
 
+       )
+
+     (:prefix ("p" . "project")
        :desc "Find file in project"         "f" #'counsel-projectile-find-file
        :desc "Switch project"               "p" #'counsel-projectile-switch-project
        :desc "Run project"                  "R" #'projectile-run-project
-
-
        :desc "Invalidate project cache"     "i" #'projectile-invalidate-cache
-
        :desc "Find recent project files"    "r" #'projectile-recentf
        :desc "Save project files"           "s" #'projectile-save-project-buffers
        :desc "Configure project"            "g" #'projectile-configure-project
        :desc "Edit project .dir-locals"     "e" #'projectile-edit-dir-locals
        :desc "Find other file"              "o" #'projectile-find-other-file
-
        :desc "Open project in treemacs"     "t" #'+treemacs-open-current-project
        )
 
@@ -55,6 +56,12 @@
        :desc "Rename current buffer file" "r" '+rename-file-and-buffer
        :desc "Find file"                   "f"   #'find-file
        :desc "Save file"                   "s"   #'save-buffer
+       )
+
+     (:prefix ("t" . "toggle")
+       :desc "line wrapping"               "l" #'toggle-truncate-lines
+       :desc "line numbers" "n" 'display-line-numbers-mode
+       :desc "treemacs" "t" 'treemacs
        )
 
      (:prefix ("w" . "window")
@@ -75,13 +82,5 @@
        )
 
      )
-
-
-    (map!
-     :leader
-     :desc "doink" "k" #'find-file
-     (:prefix ("x" . "X: Test Binds")
-       :desc "test a" "a" #'find-file
-       ))
 
     ))

@@ -41,8 +41,9 @@
 	("Y" (lambda() (interactive) (find-file "~/Dropbox/Code/docs/yabai.asciidoc" )) "yabai docs"))
 
        "OSX Keybinds"
-       (("k" (lambda() (interactive) (find-file "~/.skhdrc")) "skhdrc")
-	("K" (lambda() (interactive) (find-file "~/Dropbox/Code/docs/yabai.asciidoc")) "skhd docs"))
+       (
+	("k" (lambda() (interactive) (find-file "~/.config/emacs/modules/ui/input/keybindings.el")) "Emacs Keybindings")
+	("K" (lambda() (interactive) (find-file "~/.skhdrc")) "OS Keybindings"))
 
        "Brewfile"
        (("b" (lambda() (interactive) (find-file (concat system-config-root "/osx/Brewfile" ))) "skhdrc"))
