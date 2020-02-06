@@ -44,7 +44,8 @@
        :desc "Run project"                  "R" #'projectile-run-project
        :desc "Invalidate project cache"     "i" #'projectile-invalidate-cache
        :desc "Find recent project files"    "r" #'projectile-recentf
-       :desc "Save project files"           "s" #'projectile-save-project-buffers
+       :desc "Save project files"           "S" #'projectile-save-project-buffers
+       :desc "ripgrep in project"           "s" #'counsel-projectile-rg
        :desc "Configure project"            "g" #'projectile-configure-project
        :desc "Edit project .dir-locals"     "e" #'projectile-edit-dir-locals
        :desc "Find other file"              "o" #'projectile-find-other-file
@@ -79,6 +80,14 @@
        :desc "focus window up" "k" 'evil-window-up
        :desc "focus window down" "j" 'evil-window-down
        :desc "balance windows" "b" 'balance-windows
+       )
+
+     (:prefix ("e" . "eval")
+       :desc "eval last sexp" "e" 'eval-last-sexp
+       :desc "eval buffer" "b"    'eval-buffer
+       :desc "eval line" "l"      'eval-line
+       :desc "eval region" "r"    'eval-region
+
        )
 
      )
