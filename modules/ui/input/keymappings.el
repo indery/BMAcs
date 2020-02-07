@@ -1,11 +1,11 @@
-(with-eval-after-load 'doom/keybind-platform
+(with-eval-after-load 'doom/keymapper
   (with-eval-after-load '+evil
-    (print "running map! macro")
     (map!
      :leader
 
      :desc "M-x"                   "SPC"    #'counsel-M-x
      :desc "configuration actions" "c" #'hydra-config-actions/body
+     :desc "swiper"  "/"   #'swiper
 
      :desc "open eshell"    "'" '+eshell-pop-window	   
      
@@ -84,6 +84,7 @@
 
      (:prefix ("e" . "eval")
        :desc "eval last sexp" "e" 'eval-last-sexp
+       :desc "eval last sexp and print" "l" 'eval-print-last-sexp
        :desc "eval buffer" "b"    'eval-buffer
        :desc "eval line" "l"      'eval-line
        :desc "eval region" "r"    'eval-region
