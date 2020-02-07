@@ -42,7 +42,7 @@
 
        "OSX Keybinds"
        (
-	("k" (lambda() (interactive) (find-file "~/.config/emacs/modules/ui/input/keybindings.el")) "Emacs Keybindings")
+	("k" (lambda() (interactive) (find-file "~/.config/emacs/modules/ui/input/keymappings.el")) "Emacs Keybindings")
 	("K" (lambda() (interactive) (find-file "~/.skhdrc")) "OS Keybindings"))
 
        "Brewfile"
