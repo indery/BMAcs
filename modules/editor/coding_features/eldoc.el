@@ -16,21 +16,21 @@
 
     )
 
-  (defun +posframe-poshandler-top-right-offset (info &optional font-height)
-    (let* ((window-left (+ -20 (plist-get info :parent-window-left)))
-	   (window-top (+ 20 (plist-get info :parent-window-top)))
-	   (window-width (plist-get info :parent-window-width)) 
-	   (posframe-width  (plist-get info :posframe-width)))
-      (cons (+ window-left window-width (- 0 posframe-width))
-	    window-top))) 
-
-  (defun +posframe-poshandler-bottom-right-offset (info &optional font-height)
-    (let* ((window-left (+ -20 (plist-get info :parent-window-left)))
-	   (window-bottom (+ 20 (plist-get info :parent-window-bottom)))
-	   (window-width (plist-get info :parent-window-width)) 
-	   (posframe-width  (plist-get info :posframe-width)))
-      (cons (+ window-left window-width (- 0 posframe-width))
-	    window-bottom))) 
+					;  (defun +posframe-poshandler-top-right-offset (info &optional font-height)
+					;    (let* ((window-left (+ -20 (plist-get info :parent-window-left)))
+					;	   (window-top (+ 20 (plist-get info :parent-window-top)))
+					;	   (window-width (plist-get info :parent-window-width)) 
+					;	   (posframe-width  (plist-get info :posframe-width)))
+					;      (cons (+ window-left window-width (- 0 posframe-width))
+					;	    window-top))) 
+					;
+					;  (defun +posframe-poshandler-bottom-right-offset (info &optional font-height)
+					;    (let* ((window-left (+ -20 (plist-get info :parent-window-left)))
+					;	   (window-bottom (+ 20 (plist-get info :parent-window-bottom)))
+					;	   (window-width (plist-get info :parent-window-width)) 
+					;	   (posframe-width  (plist-get info :posframe-width)))
+					;      (cons (+ window-left window-width (- 0 posframe-width))
+					;	    window-bottom))) 
 
   (defun +eldoc-posframe-message-function (format-string &rest args)
     "Display FORMAT-STRING and ARGS, using posframe.el library."
@@ -42,13 +42,12 @@
        :internal-border-width 1
        :internal-border-color "grey"
        :left-fringe 10
-       :width 60
-       :timeout 4
+       :width 80
        :poshandler 
-       #'+posframe-poshandler-top-right-offset
-
+       #'posframe-poshandler-window-bottom-right-corner
 
        )))
+
   ;; TODO eldoc show current value for variables
   ;; ** look up existing eldoc function
 
