@@ -88,7 +88,7 @@
 
      (:prefix ("e" . "eval")
        :desc "eval last sexp" "e" 'eval-last-sexp
-       :desc "eval last sexp and print" "l" 'eval-print-last-sexp
+       :desc "eval last sexp and print" "p" 'eval-print-last-sexp
        :desc "eval buffer" "b"    'eval-buffer
        :desc "eval line" "l"      'eval-line
        :desc "eval region" "r"    'eval-region
