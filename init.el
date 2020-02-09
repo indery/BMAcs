@@ -16,6 +16,7 @@
 (add-to-list 'default-frame-alist
              '(ns-transparent-titlebar . t))
 
+(set-default 'truncate-lines t) 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; straight.el Boostrap 
 (defvar bootstrap-version)
