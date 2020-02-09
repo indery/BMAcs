@@ -30,6 +30,7 @@
 	("s" jump-to-scratch-file "scratch file")
 	("S" create-new-scratch-file "new scratch file")
 	("i" (lambda() (interactive) (find-file (concat emacs-config-root "init.el") )) "init.el" )
+	("e" (lambda() (interactive) (find-file (concat emacs-config-root "env.el") )) "env.el" )
 	)
        "Package Dependencies"
        (("l" (lambda() (interactive) (find-file "~/.emacs.d/straight/versions/default.el") ) "packages lockfile")

@@ -18,6 +18,11 @@
 
 (set-default 'truncate-lines t) 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; load env.el
+
+(load "./env.el")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; straight.el Boostrap 
 (defvar bootstrap-version)
 (let ((bootstrap-file
