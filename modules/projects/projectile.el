@@ -4,8 +4,8 @@
   (setq
    projectile-enable-caching 1
 
-   projectile-project-search-path '("~/code")
-   ;projectile-project-root-files-functions '(projectile-root-top-down)
+					;   projectile-project-search-path '("~/code")
+					;projectile-project-root-files-functions '(projectile-root-top-down)
    projectile-globally-ignored-files '("~" ".swp") 
 
    projectile-completion-system 'ivy
