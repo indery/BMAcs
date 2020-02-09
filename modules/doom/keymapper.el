@@ -431,5 +431,5 @@ Properties
 
 (evil-normalize-keymaps)
 )
-(provide 'doom/keybind-platform)
+(provide 'doom/keymapper)
 ;;; core-keybinds.el ends here
