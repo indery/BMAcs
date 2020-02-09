@@ -65,6 +65,10 @@
        :desc "treemacs" "t" 'treemacs
        )
 
+     (:prefix ("s" . "search")
+       :desc "search current directory" "d" #'(lambda () (interactive) (counsel-rg nil default-directory))
+       )
+
      (:prefix ("w" . "window")
 
        :desc "delete window" "d" 'delete-window
