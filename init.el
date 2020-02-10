@@ -107,10 +107,38 @@
            )
   )
 
+(defun load-file-handle-errors (filepath)
+  (condition-case nil
+      (load-file filepath)
+    (error (progn
+	     (message (format "Error Thrown while loading file: %S." filepath))
+	     (let (( choice (nth 1 (read-multiple-choice "what would you like to do?"
+							 '((?v "visit" "Visit the offending file")
+							   (?s "skip" "skip this file (and others that depend on it) and continue loading")
+							   (?q "quit" "quit emacs"))
+							 ))))
+	       (message (format "you selected %s." choice))
+	       (cond
+		((equal choice "visit")
+		 (message (format "visiting %s..." filepath))
+		 (find-file filepath))
+		((equal choice "quit")
+		 (kill-emacs)
+		 )
+		((equal choice "skip"
+
+			) nil)
+		)
+	       )
+	     ))
+    )
+  )
+
+
 (defun load-all-config-files () 
   (interactive)
-  (mapc (lambda (f) (load-file f)) (get-load-files))
-)
+  (mapc (lambda (f) (load-file-handle-errors f)) (get-load-files))
+  )
 
 (load-all-config-files)
 
