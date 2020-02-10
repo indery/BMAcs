@@ -111,6 +111,7 @@
   (condition-case nil
       (load-file filepath)
     (error (progn
+	     (switch-to-buffer "*Messages*")
 	     (message (format "Error Thrown while loading file: %S." filepath))
 	     (let (( choice (nth 1 (read-multiple-choice "what would you like to do?"
 							 '((?v "visit" "Visit the offending file")
