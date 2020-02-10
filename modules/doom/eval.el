@@ -234,6 +234,7 @@ buffer rather than an overlay on the line at point or the minibuffer.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil.el
 
+(with-eval-after-load '+evil
 ;;;###autoload (autoload '+eval:region "tools/eval/autoload/evil" nil t)
 (evil-define-operator +eval:region (beg end)
   "Evaluate selection or sends it to the open REPL, if available."
@@ -254,6 +255,7 @@ buffer rather than an overlay on the line at point or the minibuffer.")
   :move-point nil
   (interactive "<r>")
   (+eval/open-repl-other-window))
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; repl.el
