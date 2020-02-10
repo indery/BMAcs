@@ -30,6 +30,7 @@
 	("s" jump-to-scratch-file "scratch file")
 	("S" create-new-scratch-file "new scratch file")
 	("i" (lambda() (interactive) (find-file (concat emacs-config-root "init.el") )) "init.el" )
+	("e" (lambda() (interactive) (find-file (concat emacs-config-root "env.el") )) "env.el" )
 	)
        "Package Dependencies"
        (("l" (lambda() (interactive) (find-file "~/.emacs.d/straight/versions/default.el") ) "packages lockfile")
@@ -41,8 +42,9 @@
 	("Y" (lambda() (interactive) (find-file "~/Dropbox/Code/docs/yabai.asciidoc" )) "yabai docs"))
 
        "OSX Keybinds"
-       (("k" (lambda() (interactive) (find-file "~/.skhdrc")) "skhdrc")
-	("K" (lambda() (interactive) (find-file "~/Dropbox/Code/docs/yabai.asciidoc")) "skhd docs"))
+       (
+	("k" (lambda() (interactive) (find-file "~/.config/emacs/modules/ui/input/keymappings.el")) "Emacs Keybindings")
+	("K" (lambda() (interactive) (find-file "~/.skhdrc")) "OS Keybindings"))
 
        "Brewfile"
        (("b" (lambda() (interactive) (find-file (concat system-config-root "/osx/Brewfile" ))) "skhdrc"))

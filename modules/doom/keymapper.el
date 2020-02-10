@@ -169,7 +169,8 @@ localleader prefix."
             (define-key map (kbd doom-leader-alt-key) 'doom/leader))
         (evil-define-key* '(normal visual motion) map (kbd doom-leader-key) 'doom/leader)
         (evil-define-key* '(emacs insert) map (kbd doom-leader-alt-key) 'doom/leader))
-      (general-override-mode +1))))
+      (general-override-mode +1)
+      )))
 
 
 ;;
@@ -422,5 +423,13 @@ Properties
   certain group of keybinds."
   (doom--map-process rest))
 
-(provide 'doom/keybind-platform)
+(with-eval-after-load 'evil
+(evil-define-key* '(normal visual motion) general-override-mode-map (kbd doom-leader-key) 'doom/leader)
+(evil-define-key* '(emacs insert) general-override-mode-map (kbd doom-leader-alt-key) 'doom/leader)
+
+(general-override-mode +1)
+
+(evil-normalize-keymaps)
+)
+(provide 'doom/keymapper)
 ;;; core-keybinds.el ends here

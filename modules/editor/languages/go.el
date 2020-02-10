@@ -1,6 +1,6 @@
 
 
-(setenv "GOPATH" (concat (getenv "HOME") "/code/toolkits/go/") )  
+(setenv "GOPATH" (concat (getenv "HOME") "/go") )  
 
 (add-to-list 'exec-path  (concat (getenv "GOPATH") "bin/"))
 

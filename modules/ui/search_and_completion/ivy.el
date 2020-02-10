@@ -12,6 +12,7 @@
 	'((t . ivy--regex-ignore-order)))
 
   (setq ivy-dynamic-exhibit-delay-ms 10)  
+  (setq ivy-height 15) 
   :config (ivy-mode 1))
 
 (use-package ivy-posframe 
@@ -33,7 +34,7 @@
 	  (swiper . ivy-posframe-display-at-window-bottom-left)
 	  (t . ivy-posframe-display-at-frame-center)))
 
-  (ivy-posframe-mode 1)
+  ;;  (ivy-posframe-mode 1)
 
   )
 

@@ -16,6 +16,12 @@
 (add-to-list 'default-frame-alist
              '(ns-transparent-titlebar . t))
 
+(set-default 'truncate-lines t) 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; load env.el
+
+(load "./env.el")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; straight.el Boostrap 
 (defvar bootstrap-version)
