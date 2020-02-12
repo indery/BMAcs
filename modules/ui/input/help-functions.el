@@ -17,6 +17,7 @@
         ("v" describe-variable "variable")
         ("m" describe-mode "mode")
         ("k" describe-key "key")
+        ("K" describe-keymap "keymap")
 	)
        )
       )
