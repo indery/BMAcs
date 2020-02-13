@@ -5,8 +5,8 @@
   )
 
 (with-eval-after-load 'doom/keymapper
-  (general-define-key
-   :keymaps 'company-active-map
+  (map!
+   :map'company-active-map
    "TAB" 'company-complete-selection
    "<tab>" 'company-complete-selection
    "RET" 'company-complete-selection
