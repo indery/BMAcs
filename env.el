@@ -9,8 +9,11 @@
 ;; setup global directory config locations
 (setq
  home-dir (getenv "$HOME")
- system-config-root "~/Workspace/dotfiles/"
+ dotfiles-root "~/.config/"
+ emacs-config-root "~/.config/emacs/"
+ modules-root (concat emacs-config-root "modules/")
  org-root "~/org"
+ package-repos-root "~/.config/emacs/straight/repos/" 
  projects-root (concat org-root "/projects"))
 
 (provide '+env)
