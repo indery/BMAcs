@@ -47,7 +47,7 @@
 	("K" (lambda() (interactive) (find-file "~/.skhdrc")) "OS Keybindings"))
 
        "External"
-       (("b" (lambda() (interactive) (find-file (concat system-config-root "/osx/Brewfile" ))) "skhdrc")
+       (("b" (lambda() (interactive) (find-file (concat dotfiles-root "/osx/Brewfile" ))) "Brewfile")
 	("B" (lambda() (interactive) (find-file "~/.bashrc")) "bashrc"))
 
        )
