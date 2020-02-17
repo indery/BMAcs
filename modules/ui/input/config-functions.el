@@ -46,8 +46,9 @@
 	("k" (lambda() (interactive) (find-file "~/.config/emacs/modules/ui/input/keymappings.el")) "Emacs Keybindings")
 	("K" (lambda() (interactive) (find-file "~/.skhdrc")) "OS Keybindings"))
 
-       "Brewfile"
-       (("b" (lambda() (interactive) (find-file (concat system-config-root "/osx/Brewfile" ))) "skhdrc"))
+       "External"
+       (("b" (lambda() (interactive) (find-file (concat system-config-root "/osx/Brewfile" ))) "skhdrc")
+	("B" (lambda() (interactive) (find-file "~/.bashrc")) "bashrc"))
 
        )
       )
