@@ -18,11 +18,6 @@
 
 (set-default 'truncate-lines t) 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; load env.el
-
-(load "./env.el")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; straight.el Boostrap 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -45,6 +40,12 @@
 ;;allow use package to talk to OS package managers, to specify deps on OS bins
 (use-package use-package-ensure-system-package)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; load env.el
+
+(load "~/.config/emacs/env.el")
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Additional core elisp libraries
 
@@ -54,11 +55,6 @@
 ;; Module/file loading
 
 ;; main directories
-(setq home-dir "/Users/jeff")   
-(setq system-config-root "~/code/dotfiles/")
-(setq emacs-config-root "~/.config/emacs/")
-(setq modules-root (concat emacs-config-root "modules/") )
-(setq package-repos-dir "~/.config/emacs/straight/repos/")
 
 (defun get-all-package-files ()
   (directory-files-recursively package-repos-dir "\\.el$" t)
@@ -108,11 +104,12 @@
   )
 
 (defun load-file-handle-errors (filepath)
-  (condition-case nil
+  (condition-case err
       (load-file filepath)
     (error (progn
 	     (switch-to-buffer "*Messages*")
 	     (message (format "Error Thrown while loading file: %S." filepath))
+	     (message (format "Error: %S" (error-message-string err)))
 	     (let (( choice (nth 1 (read-multiple-choice "what would you like to do?"
 							 '((?v "visit" "Visit the offending file")
 							   (?s "skip" "skip this file (and others that depend on it) and continue loading")
