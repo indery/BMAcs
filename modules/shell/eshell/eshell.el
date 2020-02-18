@@ -6,8 +6,9 @@
 						    "<up>" 'eshell-previous-input 
 						    "<down>" 'eshell-next-input) ))
 
-  (add-to-list 'eshell-visual-commands
-	       "make")
+  (with-eval-after-load 'em-term
+    (add-to-list 'eshell-visual-commands
+		 "make"))
 
   )
 
