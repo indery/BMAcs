@@ -17,7 +17,7 @@
   )
 
 
-(defun +get-vault-secret (secret-path)
+(defun +vault-get-secret (secret-path)
 
   (let-alist (request-response-data (request
 				      (format "%s/v1/%s" (getenv "VAULT_ADDR") secret-path) 
@@ -28,9 +28,8 @@
 				      )
 
 				    )
-    (print .data.value)
+    .data.value 
 
     )
-
 
   )
