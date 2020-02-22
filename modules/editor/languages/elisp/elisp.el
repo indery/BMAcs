@@ -8,7 +8,6 @@
     #'lisp-butt-mode
     #'rainbow-delimiters-mode
     #'highlight-quoted-mode
-    #'hasklig-mode
     #'aggressive-indent-mode
     #'evil-cleverparens-mode
     #'smartparens-strict-mode
