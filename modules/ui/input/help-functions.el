@@ -17,6 +17,7 @@
         ("v" describe-variable "variable")
         ("m" describe-mode "mode")
         ("k" describe-key "key")
+        ("K" describe-keymap "keymap")
 	)
        )
       )
@@ -32,7 +33,7 @@
 
 
     (set-popup-rule!
-      "^\\*Help*" :side 'right :slot -1 :size 0.35 :select t) 
+      "^\\*Help*" :side 'right :slot -1 :size 0.38 :select t) 
 
     ;;  (add-to-list 'display-buffer-alist
     ;;	     `("*Help*"
