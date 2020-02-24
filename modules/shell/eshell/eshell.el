@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (use-package eshell 
   :config
   (add-hook 'eshell-mode-hook (lambda () 

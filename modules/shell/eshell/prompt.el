@@ -1,7 +1,8 @@
+;;; -*- lexical-binding: t; -*-
 
 (defface +eshell-prompt-pwd '((t :inherit font-lock-constant-face))
-    "TODO"
-    :group 'eshell)
+  "TODO"
+  :group 'eshell)
   
 (defface +eshell-prompt-git-branch '((t :inherit font-lock-builtin-face))
     "TODO"
