@@ -57,7 +57,7 @@
 ;; main directories
 
 (defun get-all-package-files ()
-  (directory-files-recursively package-repos-dir "\\.el$" t)
+  (directory-files-recursively package-repos-root "\\.el$" t)
   )
 
 (setq package-files-list nil)

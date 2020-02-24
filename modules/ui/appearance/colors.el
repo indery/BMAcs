@@ -50,6 +50,12 @@
   )
 
 
+(use-package ns-auto-titlebar
+  :straight (:host github :repo "purcell/ns-auto-titlebar")
+  :config
+  (when (eq system-type 'darwin) (ns-auto-titlebar-mode))
+
+  )
 
 (use-package kurecolor
   
