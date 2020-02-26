@@ -4,6 +4,8 @@ straight/repos/*
 straight/build-cache.el
 straight/modified/*
 
+request/* 
+
 forge-database.sqlite
 
 .*.swp
