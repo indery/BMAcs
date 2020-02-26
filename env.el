@@ -16,4 +16,7 @@
  package-repos-root "~/.config/emacs/straight/repos/" 
  projects-root (concat org-root "/projects"))
 
+(setq floobits-workspaces '( "GlympseHackNight" )) 
+(setq floobits-username "parsoj")
+
 (provide '+env)
