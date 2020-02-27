@@ -4,6 +4,9 @@ straight/repos/*
 straight/build-cache.el
 straight/modified/*
 
+.extension/
+emojis/
+
 request/* 
 
 forge-database.sqlite
