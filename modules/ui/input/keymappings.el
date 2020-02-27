@@ -62,6 +62,7 @@
      (:prefix ("t" . "toggle")
        :desc "line wrapping"               "l" #'toggle-truncate-lines
        :desc "line numbers" "n" 'display-line-numbers-mode
+       :desc "relative line numbers" "r" #'linum-relative-toggle
        :desc "treemacs" "t" 'treemacs
        )
 
