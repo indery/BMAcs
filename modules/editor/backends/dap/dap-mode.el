@@ -12,4 +12,7 @@
   )
 
 
+(set-popup-rule!
+  ".*server log.*" :side 'bottom :slot -1 :size 0.25 :select t) 
+
 (provide '+dap)
