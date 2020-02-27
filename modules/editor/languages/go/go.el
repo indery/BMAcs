@@ -15,6 +15,7 @@
 	 (go-mode . lsp-deferred)
 	 (go-mode . flycheck-mode)
 	 (go-mode . company-mode)
+	 (go-mode . yas-minor-mode)
 	 )
   :init
   (setq
@@ -30,4 +31,21 @@
    '(("gopls.completeUnimported" t t)
      ("gopls.staticcheck" t t)))
 
+  )
+
+
+(require 'dap-go)
+
+(defun go-dev-env-mac-setup ()
+  (progn
+    (+eshell-run-command "brew install go")
+
+    ;; LSP setup stuff
+    (+eshell-run-command "go get -u github.com/golang/tools/gopls")
+
+    ;; delve setup stuff
+    (+eshell-run-command "brew install node") ;; dap mode needs this for some reason
+    (+eshell-run-command "go get -u github.com/go-delve/delve/cmd/dlv")
+    (+eshell-run-command "sudo /usr/sbin/DevToolsSecurity -enable")
+    (dap-go-setup))
   )
