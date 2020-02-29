@@ -63,6 +63,7 @@
        :desc "line wrapping"               "l" #'toggle-truncate-lines
        :desc "line numbers" "n" 'display-line-numbers-mode
        :desc "relative line numbers" "r" #'linum-relative-toggle
+       :desc "minimap" "m" #'sublimity-mode
        :desc "treemacs" "t" 'treemacs
        )
 
