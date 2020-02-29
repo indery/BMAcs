@@ -37,6 +37,11 @@
        :desc "Git Blame"     "b"    #'magit-blame
 
        )
+     (:prefix ("d" . "debug")
+       :desc "Debug Current Project" "d" #'dap-debug
+       :desc "Toggle Breakpoint"  "b" #'dap-breakpoint-toggle
+       :desc "Open Debug Hydra" "h" #'dap-hydra
+       )
 
      (:prefix ("p" . "project")
        :desc "Find file in project"         "f" #'counsel-projectile-find-file
