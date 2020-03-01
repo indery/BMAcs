@@ -70,6 +70,7 @@
        :desc "relative line numbers" "r" #'linum-relative-toggle
        :desc "minimap" "m" #'sublimity-mode
        :desc "treemacs" "t" 'treemacs
+       :desc "fringe mode" "f" #'fringe-mode
        )
 
      (:prefix ("s" . "search")
