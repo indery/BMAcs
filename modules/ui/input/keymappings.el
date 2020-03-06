@@ -72,6 +72,13 @@
        :desc "treemacs" "t" 'treemacs
        )
 
+     (:prefix ("n" . "navigate")
+       :desc "definition" "d" #'lsp-ui-peek-find-definitions
+       :desc "implementation" "i" #'lsp-ui-peek-find-implementation
+       :desc "references" "r" #'lsp-ui-peek-find-references
+
+       )
+
      (:prefix ("s" . "search")
        :desc "search current directory" "d" #'(lambda () (interactive) (counsel-rg nil default-directory))
        )
