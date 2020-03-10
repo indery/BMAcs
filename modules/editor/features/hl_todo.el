@@ -8,7 +8,7 @@
 	  ("THEM" . "#dc8cc3")
 	  ("PROG" . "#7cb8bb")
 	  ("OKAY" . "#7cb8bb")
-	  ("MARK" . "#7cb8bb")
+	  ("MARK" . "#d0bf8f")
 	  ("DONT" . "#5f7f5f")
 	  ("FAIL" . "#8c5353")
 	  ("DONE" . "#afd8af")
