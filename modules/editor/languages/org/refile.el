@@ -16,5 +16,5 @@
 				. 
 				(:maxlevel . 3)))))
 
-  (+refresh-org-refile-targets)
+;;  (+refresh-org-refile-targets)
   )
