@@ -76,6 +76,8 @@
 ;; search Regexes
 (setq all-elisp-files-regex "\\.el$")
 
+(setq elisp-with-gzip-regex ".*\\.\\(el\\)\\(.gz\\)*$")
+
 (setq dev-files-regex 
       ".*\.\\(dev\\)\.el$")
 
@@ -84,6 +86,19 @@
 
 (defun get-all-config-files ()
   (directory-files-recursively modules-root all-elisp-files-regex)
+  )
+
+
+(setq core-files-list nil)
+(defun refresh-core-files-list ()
+  (interactive)
+  (setq core-files-list (directory-files-recursively core-lisp-files-root elisp-with-gzip-regex))
+  )
+
+(defun get-emacs-core-files ()
+  (if core-files-list core-files-list
+    (refresh-core-files-list)
+    )
   )
 
 ;; essentially, any files ending in ".dev.el" or ".test.el" will *not* be loaded

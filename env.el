@@ -14,7 +14,9 @@
  modules-root (concat emacs-config-root "modules/")
  org-root "~/org"
  package-repos-root "~/.config/emacs/straight/repos/" 
- projects-root (concat org-root "/projects"))
+ projects-root (concat org-root "/projects")
+ core-lisp-files-root "/usr/local/Cellar/emacs-plus/26.3/share/emacs/26.3/lisp/"
+ )
 
 (setq floobits-workspaces '( "GlympseHackNight" )) 
 (setq floobits-username "parsoj")

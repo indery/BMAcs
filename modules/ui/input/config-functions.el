@@ -31,6 +31,7 @@
 	("S" create-new-scratch-file "new scratch file")
 	("i" (lambda() (interactive) (find-file (concat emacs-config-root "init.el") )) "init.el" )
 	("e" (lambda() (interactive) (find-file (concat emacs-config-root "env.el") )) "env.el" )
+	("c" (lambda() (interactive) (do-find-file-jump "Jump to emacs core file .el file:" (get-emacs-core-files))) "core emacs files" )
 	)
        "Package Dependencies"
        (("l" (lambda() (interactive) (find-file "~/.emacs.d/straight/versions/default.el") ) "packages lockfile")
