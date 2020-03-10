@@ -1,7 +1,6 @@
-(setq python-bin "/usr/local/bin/python3")
 (use-package python
   :init
-  (setq python-shell-interpreter python-bin)
+					;  (setq python-shell-interpreter python-bin)
 
   :config
 
@@ -10,10 +9,18 @@
 
 (use-package lsp-python-ms
   :init
-  (setq  lsp-python-ms-python-executable-cmd python-bin)
+					;  (setq  lsp-python-ms-python-executable-cmd python-bin)
   )
 
-(use-package virtualenvwrapper)
+
+
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq pipenv-projectile-after-switch-function
+	#'pipenv-projectile-after-switch-extended)
+  )
+
 
 (with-eval-after-load 'general
   (general-add-hook 
@@ -26,7 +33,6 @@
   )
 
 (with-eval-after-load 'dap-mode
-  (setq dap-python-executable python-bin)
 
   (require 'dap-python)
 
@@ -39,4 +45,4 @@
 	       ))
 
 
-(setenv "VIRTUALENVWRAPPER_PYTHON" "/usr/local/bin/python3") 
+					;(setenv "VIRTUALENVWRAPPER_PYTHON" "/usr/local/bin/python3") 
