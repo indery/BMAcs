@@ -51,7 +51,7 @@
   ;; TODO eldoc show current value for variables
   ;; ** look up existing eldoc function
 
-  (setq eldoc-message-function #'+eldoc-posframe-message-function)  
+					;  (setq eldoc-message-function #'+eldoc-posframe-message-function)  
 
   )
 
