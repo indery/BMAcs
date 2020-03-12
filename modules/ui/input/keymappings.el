@@ -76,6 +76,7 @@
        :desc "definition" "d" #'lsp-ui-peek-find-definitions
        :desc "implementation" "i" #'lsp-ui-peek-find-implementation
        :desc "references" "r" #'lsp-ui-peek-find-references
+       :desc "back" "b" #'avy-pop-mark
 
        )
 
