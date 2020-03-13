@@ -28,7 +28,10 @@
 				      )
 
 				    )
-    .data.value 
+    (if (equal .errors ["permission denied"])
+	(message "'permission denied' from Vault - try refreshing your token")
+      .data.value
+      )
 
     )
 
