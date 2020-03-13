@@ -185,7 +185,9 @@ localleader prefix."
 	which-key-add-column-padding 1
 	which-key-max-display-columns nil
 	which-key-min-display-lines 6
-	which-key-side-window-slot -10)
+	which-key-side-window-slot -10
+	which-key-idle-delay .2
+	)
   :config
   ;; general improvements to which-key readability
   (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
