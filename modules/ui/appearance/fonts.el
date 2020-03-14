@@ -8,6 +8,12 @@
 		      :width 'normal)
 
 
+
+  (define-globalized-minor-mode global-hasklig-mode
+    hasklig-mode
+    hasklig-mode
+    )
+
   :config
-  (hasklig-mode 1) 
+  (global-hasklig-mode)
   )
