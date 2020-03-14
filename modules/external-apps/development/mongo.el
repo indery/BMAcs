@@ -1,4 +1,11 @@
 
+
+(defvar mongo-clusters '(("cluster-nickname"
+			  "cluster-url"
+			  "cluster-username-vault-path"
+			  "cluster-password-vault-path")))
+
+
 (use-package inf-mongo
   :straight (:host github :repo "endofunky/inf-mongo")
   )
