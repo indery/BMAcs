@@ -35,7 +35,7 @@
   ;; may have their own settings.
   ;;(load-theme 'doom-one t)  
   ;;(load-theme 'doom-nord-light t)  
-  (load-theme 'doom-nord t)  
+  (load-theme 'doom-vibrant t)  
 
   )
 
@@ -46,6 +46,12 @@
   :config
   (solaire-global-mode +1)
   (solaire-mode-swap-bg) 
+
+  (defun solaire-swap-bg ()
+    (interactive)
+    (solaire-mode-swap-bg)
+
+    )
 
   )
 
