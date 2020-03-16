@@ -84,16 +84,16 @@
 
 
 (with-eval-after-load '+evil
-(with-eval-after-load 'general
+  (with-eval-after-load 'general
 
-  (general-define-key
-   :states '(normal movement)
-   :prefix ","
-   "h" 'counsel-esh-history
-   )
+    (general-define-key
+     :states '(normal movement)
+     :prefix ","
+     "h" '(lambda () (interactive) (progn (evil-insert-state) (counsel-esh-history)))
+     )
 
-  (evil-collection-eshell-setup)
-  (evil-collection-eshell-next-prompt-on-insert)
+    (evil-collection-eshell-setup)
+    (evil-collection-eshell-next-prompt-on-insert)
 
+    )
   )
-)
