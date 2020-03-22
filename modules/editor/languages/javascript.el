@@ -23,6 +23,15 @@
 
   )
 
+
+(use-package tide
+  :after (js2-mode)
+  :hook ((js2-mode . tide-setup)
+	 (js2-mode . tide-hl-identifier-mode)
+	 )
+  )
+
+
 (use-package json-reformat)
 
 
