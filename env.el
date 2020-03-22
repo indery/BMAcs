@@ -11,6 +11,7 @@
  home-dir (getenv "$HOME")
  dotfiles-root "~/.config/"
  emacs-config-root "~/.config/emacs/"
+ secrets-root (concat dotfiles-root "secrets/")
  modules-root (concat emacs-config-root "modules/")
  org-root "~/org"
  package-repos-root "~/.config/emacs/straight/repos/" 

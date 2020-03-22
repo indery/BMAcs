@@ -78,6 +78,28 @@
 
 (load "~/.config/emacs/env.el")
 
+;; use gpg2 instead of 1
+(setq epg-gpg-program "gpg2")
+
+;; don't use gpg-agent pin tool (we want to use emacs instead)
+(setenv "GPG_AGENT_INFO" nil)
+
+;;(setenv "DISPLAY" )  
+(setenv "GPG_TTY" "/dev/ttys001")  
+
+
+(setq auth-sources
+      '((:source (expand-file-name (concat secrets-root "authinfo.gpg" )))))
+
+
+(defun get-all-secret-files ()
+  (directory-files-recursively secrets-root "\\.el\\.gpg$")
+  )
+
+(defun load-secrets-files ()
+  (mapc (lambda (f) (load-file-handle-errors f)) (get-all-secret-files)))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Additional core elisp libraries
