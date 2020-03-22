@@ -1,5 +1,7 @@
 (setenv "GOPATH" (concat (getenv "HOME") "/go"))
 (add-to-exec-path (concat (getenv "GOPATH") "/bin"))
+;;(add-to-exec-path  "/usr/local/opt/go@1.12/bin")
+;;(setenv "GOROOT" "/usr/local/Cellar/go@1.12/1.12.17/libexec/")
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
