@@ -40,6 +40,39 @@
 ;;allow use package to talk to OS package managers, to specify deps on OS bins
 (use-package use-package-ensure-system-package)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; how files are loaded
+
+(defun load-file-handle-errors (filepath)
+  (condition-case err
+      (load-file filepath)
+    (error (progn
+	     (switch-to-buffer "*Messages*")
+	     (message (format "Error Thrown while loading file: %S." filepath))
+	     (message (format "Error: %S" (error-message-string err)))
+	     (let (( choice (nth 1 (read-multiple-choice "what would you like to do?"
+							 '((?v "visit" "Visit the offending file")
+							   (?s "skip" "skip this file (and others that depend on it) and continue loading")
+							   (?q "quit" "quit emacs"))
+							 ))))
+	       (message (format "you selected %s." choice))
+	       (cond
+		((equal choice "visit")
+		 (message (format "visiting %s..." filepath))
+		 (find-file filepath))
+		((equal choice "quit")
+		 (kill-emacs)
+		 )
+		((equal choice "skip"
+
+			) nil)
+		)
+	       )
+	     ))
+    )
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; load env.el
 
@@ -118,34 +151,6 @@
            )
   )
 
-(defun load-file-handle-errors (filepath)
-  (condition-case err
-      (load-file filepath)
-    (error (progn
-	     (switch-to-buffer "*Messages*")
-	     (message (format "Error Thrown while loading file: %S." filepath))
-	     (message (format "Error: %S" (error-message-string err)))
-	     (let (( choice (nth 1 (read-multiple-choice "what would you like to do?"
-							 '((?v "visit" "Visit the offending file")
-							   (?s "skip" "skip this file (and others that depend on it) and continue loading")
-							   (?q "quit" "quit emacs"))
-							 ))))
-	       (message (format "you selected %s." choice))
-	       (cond
-		((equal choice "visit")
-		 (message (format "visiting %s..." filepath))
-		 (find-file filepath))
-		((equal choice "quit")
-		 (kill-emacs)
-		 )
-		((equal choice "skip"
-
-			) nil)
-		)
-	       )
-	     ))
-    )
-  )
 
 
 (defun load-all-config-files () 
