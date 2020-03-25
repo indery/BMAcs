@@ -1,9 +1,26 @@
 
-;; active Org-babel languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(;; other Babel languages
-   (plantuml . t)))
 
-(setq org-plantuml-jar-path
-      (expand-file-name "/usr/local/Cellar/plantuml/1.2020.0/libexec/plantuml.jar"))
+(with-eval-after-load  '+plantuml
+  ;; active Org-babel languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(;; other Babel languages
+     (plantuml . t)))
+
+
+
+  (setq org-plantuml-jar-path plantuml-jar-path)
+
+
+
+  ) 
+
+
+;; example src block
+;;#+begin_src plantuml :file ticket_service_objects.utxt
+;;title Authentication Sequence
+;;
+;;Alice->Bob: Authentication Request
+;;note right of Bob: Bob thinks about it
+;;Bob->Alice: Authentication Response
+;;#+end_src
