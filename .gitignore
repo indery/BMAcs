@@ -4,6 +4,8 @@ straight/repos/*
 straight/build-cache.el
 straight/modified/*
 
+external_libraries/*
+
 .extension/
 emojis/
 
