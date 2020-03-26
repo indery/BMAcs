@@ -1,5 +1,6 @@
 
-(setq org-babel-confirm-evaluate nil)
+;;(setq org-babel-confirm-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
 
 
 (defun +org-insert-code-block ()
