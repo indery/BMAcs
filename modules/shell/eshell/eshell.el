@@ -6,14 +6,19 @@
 				(general-define-key :keymaps 'eshell-mode-map 
 						    :states '(insert) 
 						    "<up>" 'eshell-previous-input 
-						    "<down>" 'eshell-next-input) ))
+						    "<down>" 'eshell-next-input)
+				(general-define-key :states '(normal movement)
+						    :prefix ","
+						    "h" '(lambda () (interactive) (progn (evil-insert-state) (counsel-esh-history)))
+						    )
+
+				))
 
   (with-eval-after-load 'em-term
     (add-to-list 'eshell-visual-commands
 		 "make"))
 
   )
-
 
 ;;;###autoload
 (defun +eshell-run-command (command &optional buffer)
@@ -86,11 +91,6 @@
 (with-eval-after-load '+evil
   (with-eval-after-load 'general
 
-    (general-define-key
-     :states '(normal movement)
-     :prefix ","
-     "h" '(lambda () (interactive) (progn (evil-insert-state) (counsel-esh-history)))
-     )
 
     (evil-collection-eshell-setup)
     (evil-collection-eshell-next-prompt-on-insert)
