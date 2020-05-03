@@ -16,3 +16,16 @@
   (add-to-exec-path sourcekit-exec-files)
   (setenv "TOOLCHAINS" "swift")
   )
+
+
+
+;; building - use xcodebuild
+
+
+;; simulator - use simctl
+
+
+;; device installation - ios-deploy
+
+
+
