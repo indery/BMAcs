@@ -7,7 +7,8 @@
      :desc "configuration actions" "c" #'hydra-config-actions/body
      :desc "swiper"  "/"   #'swiper
 
-     :desc "open eshell"    "'" '+eshell-pop-window	   
+     ;;:desc "open eshell"    "\"" '+eshell-pop-window	   
+     :desc "open shell"    "'" '(lambda () (interactive) (pop-to-buffer-same-window (shell-get-buffer-create)))  
      
      (:prefix ("b" . "buffer")
 					; :desc "Toggle narrowing"            "-"   #'doom/toggle-narrow-buffer
