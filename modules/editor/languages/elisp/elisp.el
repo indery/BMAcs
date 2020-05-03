@@ -5,7 +5,6 @@
    (list
     #'eldoc-mode
     #'company-mode
-    #'lisp-butt-mode
     #'rainbow-delimiters-mode
     #'highlight-quoted-mode
     #'aggressive-indent-mode
