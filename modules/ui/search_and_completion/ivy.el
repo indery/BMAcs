@@ -102,8 +102,10 @@
   )
 
 
-
-
+;;; ivy-wgrep stuff
+(use-package wgrep
+  :straight (:host github :repo "mhayashi1120/Emacs-wgrep")
+  )
 
 
 (provide '+ivy)
