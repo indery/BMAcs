@@ -7,6 +7,8 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :config
+  (setq lsp-response-timeout 4)
   )
 
 (use-package lsp-ui
