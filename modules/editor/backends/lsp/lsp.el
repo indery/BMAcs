@@ -31,6 +31,9 @@
   :after company
   :commands company-lsp
   :config
+  (setq company-lsp-cache-candidates 'auto)
+  (setq company-lsp-async t)
+  (setq company-lsp-enable-snippet t)
   (push 'company-lsp company-backends)
   )
 
