@@ -29,6 +29,10 @@
 
   )
 
+(use-package lsp-ivy
+  :after lsp-mode
+  )
+
 (use-package company-lsp
   :after company
   :commands company-lsp
