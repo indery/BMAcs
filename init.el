@@ -105,6 +105,9 @@
 ;; Additional core elisp libraries
 
 (use-package dash)
+(use-package f)
+(use-package async)
+(use-package s)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Module/file loading
