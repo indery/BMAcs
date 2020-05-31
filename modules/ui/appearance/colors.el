@@ -26,7 +26,18 @@
 
   ;; or for treemacs users
   (setq doom-themes-treemacs-theme "doom-colors")
+
   (doom-themes-treemacs-config) 
+
+  (treemacs-modify-theme "doom-colors"
+    :config
+    (progn
+      (treemacs-create-icon :icon (format "  %s\t" (all-the-icons-fileicon "terraform" :height 0.9 :v-adjust -0.1 :face 'all-the-icons-purple-alt)) :extensions ("tf"))
+
+      )
+    
+    )
+
 
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)

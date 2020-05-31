@@ -46,10 +46,10 @@
 )
   
 
-(use-package go-eldoc
-  :after go-mode
-  :hook (go-mode . go-eldoc-setup)
-  )
+;;(use-package go-eldoc
+;;  :after go-mode
+;;  :hook (go-mode . go-eldoc-setup)
+;;  )
 
 (use-package go-guru
   :after go-mode
