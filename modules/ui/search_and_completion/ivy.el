@@ -34,7 +34,7 @@
 	  (swiper . ivy-posframe-display-at-window-bottom-left)
 	  (t . ivy-posframe-display-at-frame-center)))
 
-  ;;  (ivy-posframe-mode 1)
+  (ivy-posframe-mode 1)
 
   )
 
