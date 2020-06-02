@@ -60,7 +60,7 @@
 
   (defun solaire-swap-bg ()
     (interactive)
-    (solaire-mode-swap-bg)
+;;    (solaire-mode-swap-bg)
 
     )
 
