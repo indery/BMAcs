@@ -3,6 +3,9 @@
 					;  (setq python-shell-interpreter python-bin)
 
   :config
+  (when (executable-find "ipython")
+    (setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args "--simple-prompt -i"))
 
   )
 
@@ -14,12 +17,12 @@
 
 
 
-(use-package pipenv
-  :hook (python-mode . pipenv-mode)
-  :init
-  (setq pipenv-projectile-after-switch-function
-	#'pipenv-projectile-after-switch-extended)
-  )
+;;(use-package pipenv
+;;  :hook (python-mode . pipenv-mode)
+;;  :init
+;;  (setq pipenv-projectile-after-switch-function
+;;	#'pipenv-projectile-after-switch-extended)
+;;  )
 
 
 (with-eval-after-load 'general
