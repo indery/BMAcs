@@ -14,7 +14,7 @@
   :hook (org-mode . mixed-pitch-mode)
 
   :custom-face
-  (variable-pitch ((t (:family "ETBembo"))))
+  (variable-pitch ((t (:family "Adobe Garamond Pro"))))
   (org-document-title ((t (:weight bold :height 1.5))))
   (org-done ((t (:strike-through t :weight bold))))
   (org-headline-done ((t (:strike-through t))))
