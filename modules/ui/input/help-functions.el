@@ -14,6 +14,7 @@
 	("h" (lambda () (interactive) (funcall +doc-at-point-func)))
 	("a" counsel-apropos "apropos")
         ("f" describe-function "function") ;; TODO move to function-at-point at some point
+        ("F" counsel-describe-face "face") 
         ("v" describe-variable "variable")
         ("m" describe-mode "mode")
         ("k" describe-key "key")
