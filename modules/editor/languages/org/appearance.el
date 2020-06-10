@@ -14,44 +14,35 @@
   :hook (org-mode . mixed-pitch-mode)
 
   :custom-face
-  (variable-pitch ((t (:family "EB Garamond"))))
+  (variable-pitch ((t (:family "ETBembo"))))
   (org-document-title ((t (:weight bold :height 1.5))))
   (org-done ((t (:strike-through t :weight bold))))
   (org-headline-done ((t (:strike-through t))))
-  (org-level-1 ((t (:weight bold :height 1.3))))
-  (org-level-2 ((t (:weight normal :height 1.2))))
-  (org-level-3 ((t (:weight normal :height 1.1))))
+  (org-level-1 ((t (:weight bold :height 1.34))))
+  (org-level-2 ((t (:weight normal :height 1.32))))
+  (org-level-3 ((t (:weight normal :height 1.3))))
   (org-image-actual-width '(600))
   (org-todo ((t (:inherit 'fixed-pitch))))
 
   :config
   (setq
    org-hide-emphasis-markers t
+   org-hidden-keywords '(title)
    )
-  )
 
-
-(with-eval-after-load 'org
-  ;; blurb to hide the "+#TITLE" keyword and some others
   
-  (defvar my-org-hidden-keywords
-    '(title author date email tags options))
+  (setq org-todo-keyword-faces `(
+				 ("TODO" . ,(doom-color 'red))
+				 ("DONE" . ,(doom-color 'grey))
+				 ("CANCELLED" . ,(doom-color 'grey))
+				 ("WAITING" . ,(doom-color 'cyan))
+				 ("BLOCKED" . ,(doom-color 'magenta))
+				 )
 
-  (defun org-hide-keywords ()
-    (save-excursion
-      (let (beg end ov)
-	(goto-char (point-min))
-	(while (re-search-forward
-		(concat "\\(^[ \t]*#\\+\\)\\("
-			(mapconcat (lambda (kw)
-                                     (format "%s:\s"(symbol-name kw)))
-                                   my-org-hidden-keywords "\\|")
-			"\\)")
-		nil t)
-          (setq beg (match-beginning 1)
-		end (match-end 2)
-		ov  (make-overlay beg end))
-	  (overlay-put ov 'invisible t)))))
+	org-todo-keywords '(
+                            (sequence "TODO(t)" "NEXT(n)" "BLOCKED(b)" "WAITING(w)" "|" "CANCELLED(c)" "DONE(d!)" )
+                            (sequence "PROJECT(p)" "|" "PROJECT-COMPLETED(P)")
+                            ))
 
-  (add-hook 'org-mode-hook 'org-hide-keywords)
   )
+
