@@ -93,7 +93,7 @@
 
 
 (defun get-all-secret-files ()
-  (directory-files-recursively secrets-root "\\.el\\.gpg$")
+  (directory-files-recursively secrets-root "\\.el$")
   )
 
 (defun load-secrets-files ()

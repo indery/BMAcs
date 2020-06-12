@@ -27,7 +27,7 @@
        "Emacs Config"
        (("M" create-new-module "new module")
 	("m" (lambda() (interactive) (do-find-file-jump "Jump To Module: " (get-all-config-files)) ) "module")
-	("s" jump-to-scratch-file "scratch file")
+	("s" (do-find-file-jump "Jump to secrets file:" (get-all-secret-files)) "secrets file")
 	("S" create-new-scratch-file "new scratch file")
 	("i" (lambda() (interactive) (find-file (concat emacs-config-root "init.el") )) "init.el" )
 	("e" (lambda() (interactive) (find-file (concat emacs-config-root "env.el") )) "env.el" )
