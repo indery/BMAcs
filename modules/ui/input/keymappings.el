@@ -92,7 +92,7 @@
        :desc "ace window" "w"  'ace-window
        :desc "ace swap window" "x" 'ace-swap-window
        :desc "window undo" "u" 'winner-undo
-       :desc "window undo" "r" 'winner-redo
+       :desc "window redo" "r" 'winner-redo
        :desc "delete other windows" "m" 'delete-other-windows
        :desc "split-window-vertically" "s" 'split-window-vertically
        :desc "split-window-horizontally" "v" 'split-window-horizontally
@@ -101,6 +101,7 @@
        :desc "focus window up" "k" 'evil-window-up
        :desc "focus window down" "j" 'evil-window-down
        :desc "balance windows" "b" 'balance-windows
+       :desc "window resize hydra" "R" 'hydra-window-resize/body
        )
 
      (:prefix ("e" . "eval")
