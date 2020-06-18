@@ -20,6 +20,12 @@
         ("k" describe-key "key")
         ("K" describe-keymap "keymap")
 	)
+
+       "Quit"
+       ((
+	 "q" nil "quit"
+	 ) 
+	)
        )
       )
 
