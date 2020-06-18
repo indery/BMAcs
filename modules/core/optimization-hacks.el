@@ -3,7 +3,14 @@
   (setq gcmh-idle-delay 3)
   :config
   (gcmh-mode 1)
- )
+  )
+
+(use-package explain-pause-mode
+  :straight (:host github :repo "lastquestion/explain-pause-mode")
+
+  :config
+  (explain-pause-mode t)
+  )
 
 ;;(use-package fast-scroll
 ;;  :straight (fast-scroll :host github :repo "ahungry/fast-scroll")
