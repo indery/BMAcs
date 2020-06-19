@@ -44,23 +44,27 @@
 
   ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
   ;; may have their own settings.
-  ;;(load-theme 'doom-one t)  
+  (load-theme 'doom-one t)  
   ;;(load-theme 'doom-nord-light t)  
-  (load-theme 'doom-vibrant t)  
+  ;;(load-theme 'doom-vibrant t)  
+  ;;(load-theme 'doom-wilmersdorf t)
+  ;;(load-theme 'doom-palenight t)
+  ;;(load-theme 'doom-rouge t)
 
   )
 
 (use-package solaire-mode
+  :disabled
   :hook
   ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
   (minibuffer-setup . solaire-mode-in-minibuffer)
   :config
   (solaire-global-mode +1)
-  (solaire-mode-swap-bg) 
+  ;;  (solaire-mode-swap-bg) 
 
   (defun solaire-swap-bg ()
     (interactive)
-;;    (solaire-mode-swap-bg)
+    (solaire-mode-swap-bg)
 
     )
 
