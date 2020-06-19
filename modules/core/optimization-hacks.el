@@ -9,7 +9,7 @@
   :straight (:host github :repo "lastquestion/explain-pause-mode")
 
   :config
-  (explain-pause-mode t)
+ ;; (explain-pause-mode t)
   )
 
 ;;(use-package fast-scroll
