@@ -21,6 +21,7 @@
   :size 0.30
   :select t
   :quit 'other
+  :autosave t
   )
 
 
