@@ -4,8 +4,11 @@
   (setq
    projectile-enable-caching 1
 
-					;   projectile-project-search-path '("~/code")
-					;projectile-project-root-files-functions '(projectile-root-top-down)
+   projectile-project-search-path '("~/projects/")
+   projectile-project-root-files-functions '(projectile-root-top-down-recurring)
+   projectile-project-root-files-top-down-recurring '("project.el")
+   projectile-project-root-files-bottom-up nil
+   projectile-project-root-files '("project.el")
    projectile-globally-ignored-files '("~" ".swp") 
 
    projectile-completion-system 'ivy
