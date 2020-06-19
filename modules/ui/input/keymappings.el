@@ -57,6 +57,7 @@
        :desc "Edit project .dir-locals"     "e" #'projectile-edit-dir-locals
        :desc "Find other file"              "o" #'projectile-find-other-file
        :desc "Open project in treemacs"     "t" #'+treemacs-open-current-project
+       :desc "Open Project Notes File"      "n" #'+projectile-open-project-notes-file
        )
 
      (:prefix ("f" . "file")
