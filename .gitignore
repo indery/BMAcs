@@ -42,3 +42,5 @@ mspyls/*
 url/*
 
 tramp
+
+.mc-lists.el
