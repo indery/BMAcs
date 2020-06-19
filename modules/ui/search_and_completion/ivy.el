@@ -16,7 +16,7 @@
   :config (ivy-mode 1))
 
 (use-package ivy-posframe 
-  :after ivy 
+  :after ivy posframe
   :config (setq ivy-fixed-height-minibuffer nil
 		ivy-posframe-border-width 10
 		ivy-posframe-parameters`(
