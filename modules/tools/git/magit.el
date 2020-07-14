@@ -30,7 +30,7 @@
 
 (set-popup-rule!
   "^magit:"
-  :side 'bottom
+  :side 'top
   :slot -1
   :size 0.50
   :select t
