@@ -57,7 +57,7 @@
 		found-treemacs-workspace)
 	(progn
 	  (setf (treemacs-current-workspace)
-		(car ( treemacs-workspaces))
+		(car (cdr (treemacs-do-create-workspace name)))
 		)
 	  (treemacs-do-add-project-to-workspace path name)
 	  )
