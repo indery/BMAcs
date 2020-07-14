@@ -44,12 +44,34 @@
 
   ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
   ;; may have their own settings.
-  (load-theme 'doom-one t)  
+  ;;(load-theme 'doom-one t)  
+  ;;(load-theme 'doom-one-light t)  
+
   ;;(load-theme 'doom-nord-light t)  
   ;;(load-theme 'doom-vibrant t)  
   ;;(load-theme 'doom-wilmersdorf t)
   ;;(load-theme 'doom-palenight t)
   ;;(load-theme 'doom-rouge t)
+
+  )
+
+(use-package auto-dark-emacs
+  :straight (:host github :repo "LionyxML/auto-dark-emacs")
+  :init
+  ;;(setq auto-dark-emacs/dark-theme 'doom-one)
+  ;;(setq auto-dark-emacs/light-theme 'doom-one-light)
+
+  ;;(setq auto-dark-emacs/dark-theme 'doom-nord)
+  ;;(setq auto-dark-emacs/light-theme 'doom-nord-light)
+
+  ;;(setq auto-dark-emacs/dark-theme 'doom-opera)
+  ;;(setq auto-dark-emacs/light-theme 'doom-opera-light)
+
+  (setq auto-dark-emacs/dark-theme 'doom-solarized-dark)
+  (setq auto-dark-emacs/light-theme 'doom-solarized-light)
+
+  ;;(setq auto-dark-emacs/dark-theme 'doom-tomorrow-night)
+  ;;(setq auto-dark-emacs/light-theme 'doom-tomorrow-day)
 
   )
 
