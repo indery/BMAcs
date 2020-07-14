@@ -3,7 +3,7 @@
   :init
   (set-face-attribute 'default nil
 		      :family "Hasklig"
-		      :height 140
+		      :height 150
 		      :weight 'normal
 		      :width 'normal)
 
