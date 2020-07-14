@@ -32,6 +32,6 @@
   "^magit:"
   :side 'top
   :slot -1
-  :size 0.50
+  :size 0.70
   :select t
   ) 
