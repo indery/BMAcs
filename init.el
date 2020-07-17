@@ -91,6 +91,7 @@
 (setq auth-sources
       '((:source (expand-file-name (concat secrets-root "authinfo.gpg" )))))
 
+(setq secrets-root "~/.config/secrets/elisp")
 
 (defun get-all-secret-files ()
   (directory-files-recursively secrets-root "\\.el$")
@@ -99,6 +100,7 @@
 (defun load-secrets-files ()
   (mapc (lambda (f) (load-file-handle-errors f)) (get-all-secret-files)))
 
+(load-secrets-files)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
