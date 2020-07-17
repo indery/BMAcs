@@ -6,8 +6,9 @@
   :hook (after-init . doom-modeline-mode)
   :init
   (setq
-   doom-modeline-height 1
+   doom-modeline-height .75
    )
+
   (set-face-attribute 'mode-line nil :height 130)
   (set-face-attribute 'mode-line-inactive nil :height 130)
 
