@@ -58,8 +58,8 @@
 (use-package auto-dark-emacs
   :straight (:host github :repo "LionyxML/auto-dark-emacs")
   :init
-  ;;(setq auto-dark-emacs/dark-theme 'doom-one)
-  ;;(setq auto-dark-emacs/light-theme 'doom-one-light)
+  (setq auto-dark-emacs/dark-theme 'doom-one)
+  (setq auto-dark-emacs/light-theme 'doom-one-light)
 
   ;;(setq auto-dark-emacs/dark-theme 'doom-nord)
   ;;(setq auto-dark-emacs/light-theme 'doom-nord-light)
@@ -67,8 +67,8 @@
   ;;(setq auto-dark-emacs/dark-theme 'doom-opera)
   ;;(setq auto-dark-emacs/light-theme 'doom-opera-light)
 
-  (setq auto-dark-emacs/dark-theme 'doom-solarized-dark)
-  (setq auto-dark-emacs/light-theme 'doom-solarized-light)
+  ;;(setq auto-dark-emacs/dark-theme 'doom-solarized-dark)
+  ;;(setq auto-dark-emacs/light-theme 'doom-solarized-light)
 
   ;;(setq auto-dark-emacs/dark-theme 'doom-tomorrow-night)
   ;;(setq auto-dark-emacs/light-theme 'doom-tomorrow-day)
