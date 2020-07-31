@@ -1,3 +1,5 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; history saving for comint
 (defun comint-write-history-on-exit (process event)
   (comint-write-input-ring)
   (let ((buf (process-buffer process)))
@@ -27,3 +29,11 @@
   (mapc-buffers 'comint-write-input-ring))
 
 (add-hook 'kill-emacs-hook 'comint-write-input-ring-all-buffers)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; don't prompt when killing comint buffers
+
+(add-hook 'comint-exec-hook 
+	  (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
