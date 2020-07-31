@@ -1,3 +1,4 @@
+(savehist-mode)
 
 (add-hook 'shell-mode-hook (lambda () 
 			     (general-define-key :states '(normal movement)
@@ -7,7 +8,7 @@
 
 			     ))
 
-
+(add-hook 'shell-mode-hook 'turn-on-comint-history)
 
 
 
