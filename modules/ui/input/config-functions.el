@@ -49,7 +49,9 @@
 
        "External"
        (("B" (lambda() (interactive) (find-file (concat dotfiles-root "osx/Brewfile" ))) "Brewfile")
-	("z" (lambda() (interactive) (find-file "~/.zshrc")) "zshrc"))
+	("z" (lambda() (interactive) (find-file "~/.zshrc")) "zshrc")
+	("Z" (lambda() (interactive) (find-file "~/.zshenv")) "zshenv")
+	)
 
        )
       )
