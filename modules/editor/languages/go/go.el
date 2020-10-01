@@ -31,7 +31,9 @@
   :config
   (lsp-register-custom-settings
    '(("gopls.completeUnimported" t t)
-     ("gopls.staticcheck" t t)))
+     ("gopls.staticcheck" t t)
+     ("gopls.analyses.ST1003" nil t) ;; ignore underscores in package names
+     ))
 
   )
 

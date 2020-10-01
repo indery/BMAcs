@@ -1,0 +1,20 @@
+
+
+* User functions
+** Create Project
+  1. query for project root
+  2. create project files
+  3. sync treemacs
+
+
+** Switch Project
+
+
+   
+
+* Common functions
+** Treemacs
+*** Sync treemacs from project state
+    1. check for existing workspace
+        - switch if found
+    2. sync projects to workspace

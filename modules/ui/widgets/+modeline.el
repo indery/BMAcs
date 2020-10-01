@@ -15,7 +15,7 @@
   (setq
    doom-modeline-bar-width 3
    doom-modeline-minor-modes nil
-   doom-modeline-buffer-file-name-style 'truncate-upto-project
+   doom-modeline-buffer-file-name-style 'auto
    doom-modeline-icon t
    doom-modeline-major-mode-icon t
    doom-modeline-major-mode-color-icon t

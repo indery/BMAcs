@@ -10,6 +10,12 @@
   )
 
 
+(use-package pyvenv)
+
+(use-package poetry
+  :after pyvenv
+  )
+
 (use-package lsp-python-ms
   :init
 					;  (setq  lsp-python-ms-python-executable-cmd python-bin)
